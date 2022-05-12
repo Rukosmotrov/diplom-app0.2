@@ -1,0 +1,56 @@
+html, body{
+  background: #f1f1f1;
+  height: 100%;
+}
+
+$firstColor: #244d61;
+$secondColor: #eaebed;
+$thirdColor: #5689c0;
+
+.main {
+  margin-top: 5rem;
+}
+
+.card{
+  max-width: 550px;
+}
+.avatar{
+  position: relative;
+  height: 350px;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background: #5689c0;
+  color: #eaebed;
+  margin-top: 3rem;
+}
+
+.leftSide {
+  position: sticky;
+  top: 5rem;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: #eaebed;
+  border-radius: 5px;
+  padding: 2rem;
+}
+
+.image-drop-area {
+  width: 120px;
+  height: 50px;
+  border: 5px dashed #244d61;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}

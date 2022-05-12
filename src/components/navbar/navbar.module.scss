@@ -1,0 +1,33 @@
+.navbar{
+  display: flex;
+  justify-content: space-between;
+  position: static;
+  top: 0;
+
+  & .wrapper {
+    width: 65%;
+    background-color: #1a3645;
+    border-radius: 16px;
+    position: relative;
+    padding: 5px;
+  }
+  & .wrapper > input{
+    background: transparent;
+    margin-top: 5px;
+    border: none;
+    outline: none;
+    color: #eaebed;
+    text-align: center;
+    width: 100%;
+  }
+  & .wrapper > input::placeholder{
+    opacity: .6;
+    color:#eaebed;
+  }
+  & .wrapper > svg{
+    opacity: .6;
+    position: absolute;
+    top:5px;
+    left: 5%;
+  }
+}
