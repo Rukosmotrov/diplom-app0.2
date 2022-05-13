@@ -1,6 +1,6 @@
-import React, {FC, useState} from 'react';
+import React, {FC, MutableRefObject, useRef, useState} from 'react';
 import {
-    Box
+    Box, Container
 } from "@mui/material";
 import './style.scss'
 import Navbar from "./components/navbar/Navbar";
@@ -16,11 +16,10 @@ const Main:FC = () => {
         <BrowserRouter>
             <Box className='main'>
                 <Navbar openMenu={() => setMenuOpen(true)}/>
-                <Routers/>
+                <Container>
+                    <Routers/>
+                </Container>
                 <Menu menuOpen={isMenuOpen} closeMenu={() => setMenuOpen(false)}/>
-            </Box>
-            <Box className='footer'>
-                <Footer/>
             </Box>
         </BrowserRouter>
     );

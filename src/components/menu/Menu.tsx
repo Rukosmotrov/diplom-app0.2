@@ -15,9 +15,12 @@ import {IMenu} from "../../interfaces";
 import {useNavigate} from "react-router-dom";
 import {MenuData} from "../data/MenuData";
 import {userData} from '../data/userData';
+import {useAuth} from "../providers/useAuth";
+import {signOut} from 'firebase/auth';
 
 const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
     const navigate = useNavigate();
+    const {user, ga} = useAuth();
 
     return (
         <Drawer
@@ -29,7 +32,7 @@ const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
                 <ListItem>
                     <Card>
                         <CardHeader
-                            avatar={<Avatar alt='User' src={userData.avatar}/>}
+                            avatar={<Avatar alt='User' src={user?.avatar}/>}
                             title={'Denys Rukosmotrov'}
                             subheader={'online'}
                         />
@@ -54,7 +57,10 @@ const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
                     )
                 })}
                 <ListItem>
-                    <Button>Log Out</Button>
+                    <Button onClick={() => {
+                        signOut(ga)
+                        closeMenu()
+                    }}>Log Out</Button>
                 </ListItem>
             </List>
         </Drawer>

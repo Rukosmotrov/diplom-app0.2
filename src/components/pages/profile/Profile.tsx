@@ -4,13 +4,13 @@ import {
     Container,
     Grid,
 } from "@mui/material";
-import Posts from "../postsSpace/Posts";
-import UserInfo from "../user/UserInfo";
-import ShortUserInfo from "../user/ShortUserInfo";
-import ShowAllFriends from "../user/ShowAllFriends";
-import MusicBox from "../user/MusicBox";
+import Posts from "../../postsSpace/Posts";
+import UserInfo from "../../user/UserInfo";
+import ShortUserInfo from "../../user/ShortUserInfo";
+import ShowAllFriends from "../../user/ShowAllFriends";
+import MusicBox from "../../user/MusicBox";
 
-const UserPage:FC = () => {
+const Profile:FC = () => {
     return (
         <Container>
             <UserInfo/>
@@ -30,4 +30,4 @@ const UserPage:FC = () => {
     );
 };
 
-export default UserPage;
+export default Profile;

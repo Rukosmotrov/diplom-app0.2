@@ -1,3 +1,5 @@
+import {Dispatch, SetStateAction} from "react";
+
 export interface INavbar {
     openMenu(): void;
 }
@@ -33,3 +35,19 @@ export interface IImageUploader {
     closeModal(): void;
     changer(image:string): void;
 }
+
+export interface IUserData {
+    email: string;
+    password: string;
+}
+
+export interface IUser {
+    _id: string;
+    avatar: string;
+    bgImg?: string;
+    firstName: string;
+    lastName: string;
+    isInNetwork?: boolean;
+}
+
+export type TypeSetState<T> = Dispatch<SetStateAction<T>>;

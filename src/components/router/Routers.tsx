@@ -1,20 +1,24 @@
 import React from 'react';
 import {Route, Routes} from "react-router-dom";
-import UserPage from "../pages/UserPage";
-import NewsPage from "../pages/NewsPage";
-import PageNotFound from "../pages/PageNotFound";
-import MessagesPage from "../pages/MessagesPage";
-import SettingsPage from "../pages/SettingsPage";
+import {privateRoutes, publicRoutes} from "./list";
+import {useAuth} from "../providers/useAuth";
 
 const Routers = () => {
+    const {user} = useAuth();
     return (
-        <Routes>
-            <Route path='/' element={<UserPage/>}/>
-            <Route path='/news' element={<NewsPage/>}/>
-            <Route path='/messages' element={<MessagesPage/>}/>
-            <Route path='/settings' element={<SettingsPage/>}/>
-            <Route path='*' element={<PageNotFound/>}/>
-        </Routes>
+        user
+            ?
+            <Routes>
+                {privateRoutes.map(item =>
+                    <Route key={item.path} path={item.path} element={<item.element/>}/>
+                )}
+            </Routes>
+            :
+            <Routes>
+                {publicRoutes.map(item =>
+                    <Route key={item.path} path={item.path} element={<item.element/>}/>
+                )}
+            </Routes>
     );
 };
 
