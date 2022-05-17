@@ -21,6 +21,7 @@ const Main:FC = () => {
                 </Container>
                 <Menu menuOpen={isMenuOpen} closeMenu={() => setMenuOpen(false)}/>
             </Box>
+            <Footer/>
         </BrowserRouter>
     );
 };

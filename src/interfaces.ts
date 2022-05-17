@@ -1,4 +1,8 @@
 import {Dispatch, SetStateAction} from "react";
+import {Auth} from "firebase/auth";
+import {Firestore} from "firebase/firestore";
+import firebase from "firebase/compat";
+import DocumentData = firebase.firestore.DocumentData;
 
 export interface INavbar {
     openMenu(): void;
@@ -10,6 +14,8 @@ export interface IPost {
     description?: string;
     id?: number | undefined;
     remove?(id: number | undefined): void;
+    time?: string;
+    author?: IUser | null;
 }
 
 export interface IMenu {
@@ -26,7 +32,7 @@ export interface ICreatingPost {
 }
 
 export interface IPostListProps {
-    posts: IPost[];
+    posts: IPost[] | DocumentData[];
     onRemove(id: number): void;
 }
 
@@ -48,6 +54,13 @@ export interface IUser {
     firstName: string;
     lastName: string;
     isInNetwork?: boolean;
+}
+
+export interface IAuthContext {
+    user: IUser | null;
+    setUser: TypeSetState<IUser | null>;
+    ga: Auth;
+    db: Firestore;
 }
 
 export type TypeSetState<T> = Dispatch<SetStateAction<T>>;

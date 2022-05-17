@@ -2,8 +2,10 @@ import React, {FC} from 'react';
 import {IPostListProps} from "../../interfaces";
 import Post from "./Post";
 import {Grid, Typography} from "@mui/material";
+import {useAuth} from "../providers/useAuth";
 
 const PostList:FC<IPostListProps> = ({posts, onRemove}) => {
+    const {user} = useAuth();
     return (
         <>
             {posts.length > 0
@@ -18,6 +20,7 @@ const PostList:FC<IPostListProps> = ({posts, onRemove}) => {
                                 alt='Post image'
                                 description={post.description}
                                 remove={onRemove}
+                                author={user}
                             />
                         })
                     }

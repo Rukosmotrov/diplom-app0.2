@@ -3,8 +3,8 @@ import {Divider} from "@mui/material";
 
 const Footer = () => {
     return (
-        <footer>
-            {'ⓒ 2022'}
+        <footer className='footer'>
+            {}
         </footer>
     );
 };

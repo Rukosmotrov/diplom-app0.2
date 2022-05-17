@@ -3,8 +3,12 @@ import {ICreatingPost} from "../../interfaces";
 import {Box, Modal, Typography, TextareaAutosize, Button, Alert, Divider} from "@mui/material";
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
+import {addDoc, collection, doc, updateDoc, setDoc} from 'firebase/firestore';
+import {useAuth} from "../providers/useAuth";
+import {postData} from "../data/postData";
 
-const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPostCreating}) => {
+const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPostCreating, posts}) => {
+    const {db, user} = useAuth();
     const [imageDrag, setImageDrag] = useState(false);
     const [imageDropped, setImageDropped] = useState(false);
     const [post, setPost] = useState({img: '', description: ''});
@@ -43,13 +47,26 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
         }
     }, [postCreating]);
 
-    const addNewPost = () => {
+    const date = new Date();
+    const time = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+
+    const addNewPost = async () => {
         const newPost = {
-            ...post, id: Date.now()
+            ...post,
+            id: Date.now(),
+            author: user,
+            time: time
         };
-        if (post.img !== '' || post.description !== ''){
+        if (post.img !== '' || post.description !== '' && user){
+            try {
+                const docRef = await addDoc(collection(db, "posts"), {
+                    posts: posts
+                });
+                console.log('Document written with ID: ', docRef.id);
+            } catch (e: any) {
+                console.error('Error adding document: ', e);
+            }
             addPost(newPost);
-            console.log(newPost);
             setPost({img:'', description:''});
             setPostCreating(false);
         } else{

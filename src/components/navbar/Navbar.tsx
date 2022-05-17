@@ -84,7 +84,13 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
             :
             <AppBar className={classes.navbar}>
                 <Toolbar sx={{display:'flex', justifyContent:'space-between'}}>
-                    {'yikes!'}
+                    <IconButton
+                        size="medium"
+                        color="inherit"
+                        sx={{ mr: 2 }}
+                    >
+                        {'yikes!'}
+                    </IconButton>
                 </Toolbar>
             </AppBar>
     );

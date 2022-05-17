@@ -1,4 +1,4 @@
-import NewsPage from "../pages/NewsPage";
+import NewsPage from "../pages/news/NewsPage";
 import MessagesPage from "../pages/messages/MessagesPage";
 import SettingsPage from "../pages/SettingsPage";
 import PageNotFound from "../pages/PageNotFound";
@@ -49,7 +49,7 @@ export const privateRoutes = [
     },
     {
         path: '*',
-        element: Auth
+        element: Profile
     },
 ];
 

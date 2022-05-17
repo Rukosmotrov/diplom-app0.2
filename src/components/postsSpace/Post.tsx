@@ -7,7 +7,7 @@ import {
     CardMedia,
     Divider,
     Grid,
-    IconButton,
+    IconButton, Link,
     SpeedDial, SpeedDialAction,
     Typography
 } from "@mui/material";
@@ -17,24 +17,33 @@ import CommentIcon from '@mui/icons-material/Comment';
 import ShareIcon from "@mui/icons-material/Share";
 import CloseIcon from '@mui/icons-material/Close';
 import {IPost} from "../../interfaces";
-import {userData} from '../data/userData'
+import {userData} from '../data/userData';
+import {useAuth} from "../providers/useAuth";
 
-const Post:FC<IPost> = ({img, alt, description, remove, id}) => {
+const Post:FC<IPost> = ({
+                            img,
+                            alt,
+                            description,
+                            remove,
+                            id,
+                            time,
+                            author
+}) => {
     const date = new Date();
-    const time = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
+
     return (
         <Grid item>
             <Card>
-                <CardHeader
-                    avatar={<Avatar src={userData.avatar}/>}
-                    title={`${userData.firstName} ${userData.lastName}`}
-                    subheader={time}
-                    action={
-                        <IconButton aria-label="settings" onClick={() => remove ? remove(id) : remove}>
-                            <CloseIcon/>
-                        </IconButton>
-                    }
-                />
+                    <CardHeader
+                        avatar={<Link href='/profile'><Avatar src={author ? author.avatar : ''}/></Link>}
+                        title={<Link href='/profile' underline='none'>{author && author.firstName + ' ' + author.lastName}</Link>}
+                        subheader={`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`}
+                        action={
+                            <IconButton aria-label="settings" onClick={() => remove ? remove(id) : remove}>
+                                <CloseIcon/>
+                            </IconButton>
+                        }
+                    />
                 {img !== ''
                     ?
                     <>
