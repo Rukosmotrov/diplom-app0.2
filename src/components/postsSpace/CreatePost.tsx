@@ -50,7 +50,7 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
     const date = new Date();
     const time = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
 
-    const addNewPost = async () => {
+    const addNewPost =  () => {
         const newPost = {
             ...post,
             id: Date.now(),
@@ -58,15 +58,9 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
             time: time
         };
         if (post.img !== '' || post.description !== '' && user){
-            try {
-                const docRef = await addDoc(collection(db, "posts"), {
-                    posts: posts
-                });
-                console.log('Document written with ID: ', docRef.id);
-            } catch (e: any) {
-                console.error('Error adding document: ', e);
-            }
+            console.log('Posts before: ', posts);
             addPost(newPost);
+            console.log('Posts after: ', posts);
             setPost({img:'', description:''});
             setPostCreating(false);
         } else{
@@ -77,6 +71,7 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
             }, 1500)
         }
     };
+
     const addWithEnter = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             addNewPost();

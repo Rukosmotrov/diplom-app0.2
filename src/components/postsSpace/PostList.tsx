@@ -1,11 +1,13 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {IPostListProps} from "../../interfaces";
 import Post from "./Post";
 import {Grid, Typography} from "@mui/material";
 import {useAuth} from "../providers/useAuth";
+import {addDoc, collection} from "firebase/firestore";
 
 const PostList:FC<IPostListProps> = ({posts, onRemove}) => {
-    const {user} = useAuth();
+    const {user, db} = useAuth();
+
     return (
         <>
             {posts.length > 0
