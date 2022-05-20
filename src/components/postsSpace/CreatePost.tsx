@@ -58,9 +58,7 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
             time: time
         };
         if (post.img !== '' || post.description !== '' && user){
-            console.log('Posts before: ', posts);
             addPost(newPost);
-            console.log('Posts after: ', posts);
             setPost({img:'', description:''});
             setPostCreating(false);
         } else{

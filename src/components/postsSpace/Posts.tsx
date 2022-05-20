@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import {IPost} from "../../interfaces";
 import PostList from "./PostList";
 import CreatePost from "../postsSpace/CreatePost";
-import {onSnapshot, doc, collection, runTransaction, addDoc, updateDoc, setDoc} from 'firebase/firestore';
+import {onSnapshot, doc, collection, getDoc, addDoc, updateDoc, setDoc} from 'firebase/firestore';
 import {useAuth} from "../providers/useAuth";
 
 const Posts:FC = () => {
@@ -20,17 +20,6 @@ const Posts:FC = () => {
         setPosts(prev => prev.filter(item => item.id !== id));
     }
 
-    useEffect(() => {
-        const unsub = onSnapshot(collection(db, 'user'), doc => {
-            doc.forEach((d: any) => {
-                console.log(d.data());
-                setPosts([...d.data()]);
-            })
-        });
-        return () => {
-            unsub();
-        }
-    }, [])
     const addPostToDoc = async () => {
         if (posts.length > 1) {
             const postDocRef = doc(db, "user", "posts");
@@ -47,6 +36,7 @@ const Posts:FC = () => {
     useEffect( () => {
         if (posts.length > 0) {
             addPostToDoc();
+            console.log('Posts: ', posts);
         }
     }, [posts]);
 
