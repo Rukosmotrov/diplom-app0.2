@@ -3,9 +3,7 @@ import {ICreatingPost} from "../../interfaces";
 import {Box, Modal, Typography, TextareaAutosize, Button, Alert, Divider} from "@mui/material";
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
-import {addDoc, collection, doc, updateDoc, setDoc} from 'firebase/firestore';
 import {useAuth} from "../providers/useAuth";
-import {postData} from "../data/postData";
 
 const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPostCreating, posts}) => {
     const {db, user} = useAuth();

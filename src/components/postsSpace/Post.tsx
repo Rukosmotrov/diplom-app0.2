@@ -37,7 +37,7 @@ const Post:FC<IPost> = ({
                     <CardHeader
                         avatar={<Link href='/profile'><Avatar src={author ? author.avatar : ''}/></Link>}
                         title={<Link href='/profile' underline='none'>{author && author.firstName + ' ' + author.lastName}</Link>}
-                        subheader={`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`}
+                        subheader={time}
                         action={
                             <IconButton aria-label="settings" onClick={() => remove ? remove(id) : remove}>
                                 <CloseIcon/>

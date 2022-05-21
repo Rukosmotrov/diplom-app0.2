@@ -1,7 +1,7 @@
 import {createContext, Dispatch, FC, SetStateAction, useState, useEffect, useMemo} from "react";
 import {IAuthContext, IUser, TypeSetState} from "../../interfaces";
 import {getAuth, onAuthStateChanged, Auth} from 'firebase/auth';
-import {getFirestore, Firestore} from 'firebase/firestore'
+import {getFirestore, Firestore, setDoc, doc} from 'firebase/firestore'
 import {userData} from '../data/userData';
 import {useNavigate} from "react-router-dom";
 

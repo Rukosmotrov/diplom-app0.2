@@ -10,7 +10,25 @@ import {useAuth} from "../providers/useAuth";
 const Posts:FC = () => {
     const [isPostCreating, setPostCreating] = useState(false);
     const [posts, setPosts] = useState<IPost[]>([]);
+    const [canUpload, setCanUpload] = useState(false);
     const {db} = useAuth();
+
+    const getPostsFromDoc = async () => {
+        const docRef = doc(db, "user", "posts");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            setPosts(docSnap.data().posts);
+            console.log('Posts: ', posts);
+            console.log('Posts length: ', posts.length);
+        } else {
+            return console.log("No such document!");
+        }
+    }
+
+    useEffect(() => {
+        getPostsFromDoc()
+        setCanUpload(true);
+    }, []);
 
     const addPost = (newPost: IPost) => {
         setPosts([newPost, ...posts]);
@@ -21,20 +39,14 @@ const Posts:FC = () => {
     }
 
     const addPostToDoc = async () => {
-        if (posts.length > 1) {
-            const postDocRef = doc(db, "user", "posts");
-            await updateDoc(postDocRef, {
-                posts: posts
-            });
-        } else {
-            await setDoc(doc(db, "user", "posts"), {
-                posts: posts
-            });
-        }
+        const postDocRef = doc(db, "user", "posts");
+        await updateDoc(postDocRef, {
+            posts: posts
+        });
     }
 
     useEffect( () => {
-        if (posts.length > 0) {
+        if (canUpload) {
             addPostToDoc();
             console.log('Posts: ', posts);
         }

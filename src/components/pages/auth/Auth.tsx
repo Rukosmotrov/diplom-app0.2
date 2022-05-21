@@ -9,21 +9,24 @@ import {
 } from 'firebase/auth';
 import {useAuth} from "../../providers/useAuth";
 import {useNavigate} from "react-router-dom";
+import {doc, setDoc} from "firebase/firestore";
 
 const Auth:FC = () => {
-    const {ga, user} = useAuth();
+    const {ga, user, db} = useAuth();
     const [isRegForm, setIsRegForm] = useState(false);
     const [isRegError, setRegError] = useState(false);
     const regError = useRef('');
     const [userData, setUserData] = useState<IUserData>({email:'', password:''} as IUserData);
     const navigate = useNavigate();
 
-
     const handleLogin = async (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (isRegForm){
             try {
                 await createUserWithEmailAndPassword(ga, userData.email, userData.password);
+                await setDoc(doc(db, "user", "posts"), {
+                    posts: []
+                });
             } catch (error:any) {
                 error.message && console.log(error.message);
                 setRegError(true);
