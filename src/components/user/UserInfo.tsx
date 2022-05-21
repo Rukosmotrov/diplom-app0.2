@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
     Button,
     Card,
@@ -12,11 +12,9 @@ import {
 import HomeIcon from "@mui/icons-material/Home";
 import ChildFriendlyIcon from "@mui/icons-material/ChildFriendly";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import SchoolIcon from '@mui/icons-material/School';
-import {userData} from '../data/userData';
+import {INeedData} from "../../interfaces";
 
-const UserInfo:FC = () => {
-    const data = userData;
+const UserInfo:FC<INeedData> = ({data}) => {
     return (
         <Grid container spacing={5} direction='row'>
             <Grid item xs={3}>
@@ -24,7 +22,7 @@ const UserInfo:FC = () => {
                     <CardMedia
                         component='img'
                         height='280px'
-                        image={data.avatar}
+                        image='39013212.jpg'
                     />
                     <CardActions sx={{display:'flex', justifyContent:'space-between'}}>
                         <Button variant='contained' sx={{mt:2, width:'100px'}}>Follow</Button>
@@ -42,25 +40,19 @@ const UserInfo:FC = () => {
                                 <ListItemIcon>
                                     <HomeIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary={`Living in: ${data.livingIn}`}/>
+                                <ListItemText primary={`Living in: ${data.cityOfResidence}`}/>
                             </ListItem>
                             <ListItem>
                                 <ListItemIcon>
                                     <LocationOnIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary={`Born in: ${data.bornIn}`}/>
+                                <ListItemText primary={`Born in: ${data.countryOfBirth}`}/>
                             </ListItem>
                             <ListItem>
                                 <ListItemIcon>
                                     <ChildFriendlyIcon/>
                                 </ListItemIcon>
                                 <ListItemText primary={`Birth date: ${data.birthDate}`}/>
-                            </ListItem>
-                            <ListItem>
-                                <ListItemIcon>
-                                    <SchoolIcon/>
-                                </ListItemIcon>
-                                <ListItemText primary={`Studies in: ${data.studiesIn}`}/>
                             </ListItem>
                         </List>
                     </CardContent>

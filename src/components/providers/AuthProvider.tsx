@@ -2,8 +2,7 @@ import {createContext, Dispatch, FC, SetStateAction, useState, useEffect, useMem
 import {IAuthContext, IUser, TypeSetState} from "../../interfaces";
 import {getAuth, onAuthStateChanged, Auth} from 'firebase/auth';
 import {getFirestore, Firestore, setDoc, doc} from 'firebase/firestore'
-import {userData} from '../data/userData';
-import {useNavigate} from "react-router-dom";
+import {generalUserData} from '../data/generalUserData';
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
@@ -18,9 +17,10 @@ export const AuthProvider = ({children}: any) => {
             if (authUser) {
                 setUser({
                     _id: authUser.uid,
-                    avatar: userData.avatar || '',
-                    firstName: userData.firstName || '',
-                    lastName: userData.lastName || '',
+                    avatar: generalUserData.avatar || '',
+                    firstName: generalUserData.firstName || '',
+                    lastName: generalUserData.lastName || '',
+                    email : authUser.email
                 });
             } else {
                 setUser(null);

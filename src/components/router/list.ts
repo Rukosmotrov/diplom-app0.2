@@ -4,7 +4,8 @@ import SettingsPage from "../pages/SettingsPage";
 import PageNotFound from "../pages/PageNotFound";
 import FriendsPage from "../pages/FriendsPage";
 import Profile from "../pages/profile/Profile";
-import Auth from "../pages/auth/Auth";
+import SignInPage from "../pages/auth/SignInPage";
+import SignUpPage from "../pages/auth/SignUpPage";
 
 export const privateRoutes = [
     {
@@ -55,12 +56,17 @@ export const privateRoutes = [
 
 export const publicRoutes = [
     {
-        path: '/auth',
-        element: Auth,
+        path: '/sign-in',
+        element: SignInPage,
+        auth: false
+    },
+    {
+        path: '/sign-up',
+        element: SignUpPage,
         auth: false
     },
     {
         path: '*',
-        element: Auth
+        element: SignInPage
     }
-]
+];

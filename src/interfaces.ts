@@ -50,6 +50,7 @@ export interface IUserData {
 export interface IUser {
     _id: string;
     avatar: string;
+    email?: string | null;
     bgImg?: string;
     firstName: string;
     lastName: string;
@@ -64,3 +65,18 @@ export interface IAuthContext {
 }
 
 export type TypeSetState<T> = Dispatch<SetStateAction<T>>;
+
+export interface IUserInfo {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    birthDate: string;
+    countryOfBirth: string;
+    countryOfResidence: string;
+    cityOfResidence: string;
+}
+
+export interface INeedData {
+    data: IUserInfo
+}

@@ -1,4 +1,4 @@
-import React, {FC, useState, useContext, MutableRefObject, Context} from 'react';
+import React, {FC, useState} from 'react';
 import {
     Box,
     AppBar,
@@ -13,9 +13,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import classes from './navbar.module.scss'
 import {INavbar} from "../../interfaces";
-import {userData} from '../data/userData';
+import {generalUserData} from '../data/generalUserData';
 import {useAuth} from "../providers/useAuth";
-// import {AuthContext} from "../context/context";
 
 const Navbar:FC<INavbar> = ({openMenu}) => {
     const [searchActive, setSearchActive] = useState<boolean>(false);
@@ -76,7 +75,7 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
                             aria-haspopup="true"
                             color="inherit"
                         >
-                            <Avatar alt='User avatar' src={userData.avatar}/>
+                            <Avatar alt='User avatar' src={generalUserData.avatar}/>
                         </IconButton>
                     </Box>
                 </Toolbar>

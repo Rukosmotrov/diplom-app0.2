@@ -12,7 +12,7 @@ import {
     AccordionDetails
 } from "@mui/material";
 import ImageUploader from "../utils/ImageUploader";
-import {userData} from '../data/userData';
+import {generalUserData} from '../data/generalUserData';
 import {settingsData} from '../data/settingsData';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -26,7 +26,7 @@ const SettingsPage:FC = () => {
         };
 
     const changeAvatar = (newAvatar:string) => {
-        userData.avatar = newAvatar
+        generalUserData.avatar = newAvatar
     }
 
     return (

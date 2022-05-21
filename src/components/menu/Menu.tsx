@@ -14,7 +14,7 @@ import {
 import {IMenu} from "../../interfaces";
 import {useNavigate} from "react-router-dom";
 import {MenuData} from "../data/MenuData";
-import {userData} from '../data/userData';
+import {generalUserData} from '../data/generalUserData';
 import {useAuth} from "../providers/useAuth";
 import {signOut} from 'firebase/auth';
 

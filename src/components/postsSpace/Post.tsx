@@ -1,4 +1,4 @@
-import React, {FC, useContext} from 'react';
+import React, {FC, useContext, useEffect, useState} from 'react';
 import {
     Avatar,
     Card,
@@ -8,17 +8,15 @@ import {
     Divider,
     Grid,
     IconButton, Link,
-    SpeedDial, SpeedDialAction,
     Typography
 } from "@mui/material";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from '@mui/icons-material/Comment';
 import ShareIcon from "@mui/icons-material/Share";
 import CloseIcon from '@mui/icons-material/Close';
 import {IPost} from "../../interfaces";
-import {userData} from '../data/userData';
 import {useAuth} from "../providers/useAuth";
+import {doc, getDoc} from "firebase/firestore";
 
 const Post:FC<IPost> = ({
                             img,
@@ -29,14 +27,35 @@ const Post:FC<IPost> = ({
                             time,
                             author
 }) => {
-    const date = new Date();
+    const {user, db} = useAuth();
+    const [data, setData] = useState<any>({
+        firstName: '',
+        lastName: '',
+        cityOfResidence: '',
+        countryOfBirth: '',
+        birthDate: ''
+    });
+
+    const getUserDataFromDoc = async () => {
+        const docRef = doc(db, `${user?.email}`, "userData");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            setData(docSnap.data());
+        } else {
+            return console.log("No such document!");
+        }
+    }
+
+    useEffect(() => {
+        getUserDataFromDoc();
+    }, []);
 
     return (
         <Grid item>
             <Card>
                     <CardHeader
                         avatar={<Link href='/profile'><Avatar src={author ? author.avatar : ''}/></Link>}
-                        title={<Link href='/profile' underline='none'>{author && author.firstName + ' ' + author.lastName}</Link>}
+                        title={<Link href='/profile' underline='none'>{data.firstName+ ' ' + data.lastName}</Link>}
                         subheader={time}
                         action={
                             <IconButton aria-label="settings" onClick={() => remove ? remove(id) : remove}>

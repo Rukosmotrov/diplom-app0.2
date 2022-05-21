@@ -4,17 +4,17 @@ import AddIcon from '@mui/icons-material/Add';
 import {IPost} from "../../interfaces";
 import PostList from "./PostList";
 import CreatePost from "../postsSpace/CreatePost";
-import {onSnapshot, doc, collection, getDoc, addDoc, updateDoc, setDoc} from 'firebase/firestore';
+import {doc, getDoc, updateDoc} from 'firebase/firestore';
 import {useAuth} from "../providers/useAuth";
 
 const Posts:FC = () => {
     const [isPostCreating, setPostCreating] = useState(false);
     const [posts, setPosts] = useState<IPost[]>([]);
     const [canUpload, setCanUpload] = useState(false);
-    const {db} = useAuth();
+    const {db, user} = useAuth();
 
     const getPostsFromDoc = async () => {
-        const docRef = doc(db, "user", "posts");
+        const docRef = doc(db, `${user?.email}`, "posts");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setPosts(docSnap.data().posts);
@@ -39,7 +39,7 @@ const Posts:FC = () => {
     }
 
     const addPostToDoc = async () => {
-        const postDocRef = doc(db, "user", "posts");
+        const postDocRef = doc(db, `${user?.email}`, "posts");
         await updateDoc(postDocRef, {
             posts: posts
         });
