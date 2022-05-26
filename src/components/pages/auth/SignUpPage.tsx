@@ -14,13 +14,17 @@ const SignUpPage:FC = () => {
     const regError = useRef('');
     const [userData, setUserData] = useState<IUserData>({email:'', password:''} as IUserData);
     const [userInfo, setUserInfo] = useState<IUserInfo>({
+        email: '',
+        password: '',
         firstName: '',
         lastName: '',
         birthDate: '',
         countryOfBirth: '',
         countryOfResidence: '',
         cityOfResidence: '',
-    } as IUserInfo);
+        avatar: '',
+        bgImg: ''
+    });
 
     const handleSignUp = async (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -30,14 +34,18 @@ const SignUpPage:FC = () => {
                 posts: []
             });
             await setDoc(doc(db, userData.email, "userData"), {
-                email: userData.email,
-                password: userData.password,
-                firstName: userInfo.firstName,
-                lastName: userInfo.lastName,
-                birthDate: userInfo.birthDate,
-                countryOfBirth: userInfo.countryOfBirth,
-                countryOfResidence: userInfo.countryOfResidence,
-                cityOfResidence: userInfo.cityOfResidence
+                data: {
+                    email: userData.email,
+                    password: userData.password,
+                    firstName: userInfo.firstName,
+                    lastName: userInfo.lastName,
+                    birthDate: userInfo.birthDate,
+                    countryOfBirth: userInfo.countryOfBirth,
+                    countryOfResidence: userInfo.countryOfResidence,
+                    cityOfResidence: userInfo.cityOfResidence,
+                    avatar: '39013212.jpg',
+                    bgImg: 'painting-3135875_960_720.jpg'
+                }
             });
         } catch (error:any) {
             error.message && console.log(error.message);
@@ -52,81 +60,95 @@ const SignUpPage:FC = () => {
         <>
             {isRegError && <Alert severity="error" sx={{m:'1rem 0'}}>{regError.current}</Alert>}
             <Box className={classes.authBox}>
-                <form onSubmit={handleSignUp} className={classes.settingBox}>
-                    <TextField
-                        type='email'
-                        label='Email'
-                        variant='outlined'
-                        value={userData.email}
-                        onChange={e => setUserData( {...userData, email: e.target.value})}
-                        required
-                    />
-                    <br/><br/>
-                    <TextField
-                        type='password'
-                        label='Password'
-                        variant='outlined'
-                        value={userData.password}
-                        onChange={e => setUserData( {...userData, password: e.target.value})}
-                        required
-                    />
-                    <br/><br/>
-                    <TextField
-                        type='text'
-                        label='First name'
-                        variant='outlined'
-                        value={userInfo.firstName}
-                        onChange={e => {setUserInfo({...userInfo, firstName: e.target.value})}}
-                        required
-                    />
-                    <br/><br/>
-                    <TextField
-                        type='text'
-                        label='Last name'
-                        variant='outlined'
-                        value={userInfo.lastName}
-                        onChange={e => {setUserInfo({...userInfo, lastName: e.target.value})}}
-                        required
-                    />
-                    <br/><br/>
-                    <TextField
-                        type='date'
-                        label='Date of birth'
-                        variant='outlined'
-                        value={userInfo.birthDate}
-                        onChange={e => {setUserInfo({...userInfo, birthDate: e.target.value})}}
-                        required
-                    />
-                    <br/><br/>
-                    <TextField
-                        type='text'
-                        label='Country of birth'
-                        variant='outlined'
-                        value={userInfo.countryOfBirth}
-                        onChange={e => {setUserInfo({...userInfo, countryOfBirth: e.target.value})}}
-                    />
-                    <br/><br/>
-                    <TextField
-                        type='text'
-                        label='Country of residence'
-                        variant='outlined'
-                        value={userInfo.countryOfResidence}
-                        onChange={e => {setUserInfo({...userInfo, countryOfResidence: e.target.value})}}
-                    />
-                    <br/><br/>
-                    <TextField
-                        type='text'
-                        label='City of residence'
-                        variant='outlined'
-                        value={userInfo.cityOfResidence}
-                        onChange={e => {setUserInfo({...userInfo, cityOfResidence: e.target.value})}}
-                    />
-                    <br/><br/>
-                    <ButtonGroup variant='text' sx={{display:'flex', justifyContent:'center'}}>
-                        <Button type='submit'>Sign up</Button>
+                <form onSubmit={handleSignUp} className={classes.authForm}>
+                    <Grid container spacing={5}>
+                        <Grid container direction="column" item spacing={5} xs={6}>
+                            <Grid item xs={3}>
+                                <TextField
+                                    type='email'
+                                    label='Email'
+                                    variant='outlined'
+                                    value={userData.email}
+                                    onChange={e => setUserData( {...userData, email: e.target.value})}
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    type='password'
+                                    label='Password'
+                                    variant='outlined'
+                                    value={userData.password}
+                                    onChange={e => setUserData( {...userData, password: e.target.value})}
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    type='text'
+                                    label='First name'
+                                    variant='outlined'
+                                    value={userInfo.firstName}
+                                    onChange={e => {setUserInfo({...userInfo, firstName: e.target.value})}}
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    type='text'
+                                    label='Last name'
+                                    variant='outlined'
+                                    value={userInfo.lastName}
+                                    onChange={e => {setUserInfo({...userInfo, lastName: e.target.value})}}
+                                    required
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid container item direction="column" spacing={5} xs={6}>
+                            <Grid item xs={3}>
+                                <TextField
+                                    type='text'
+                                    label='Date of birth'
+                                    variant='outlined'
+                                    value={userInfo.birthDate}
+                                    onChange={e => {setUserInfo({...userInfo, birthDate: e.target.value})}}
+                                    required
+                                />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    type='text'
+                                    label='Country of birth'
+                                    variant='outlined'
+                                    value={userInfo.countryOfBirth}
+                                    onChange={e => {setUserInfo({...userInfo, countryOfBirth: e.target.value})}}
+                                />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    type='text'
+                                    label='Country of residence'
+                                    variant='outlined'
+                                    value={userInfo.countryOfResidence}
+                                    onChange={e => {setUserInfo({...userInfo, countryOfResidence: e.target.value})}}
+                                />
+                            </Grid>
+                            <Grid item xs={3}>
+                                <TextField
+                                    type='text'
+                                    label='City of residence'
+                                    variant='outlined'
+                                    value={userInfo.cityOfResidence}
+                                    onChange={e => {setUserInfo({...userInfo, cityOfResidence: e.target.value})}}
+                                />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <ButtonGroup variant='text' sx={{display:'flex', justifyContent:'space-between', mt:5}}>
+                        <Button type='submit' variant='contained'>Sign up</Button>
+                        <Button onClick={() => navigate('/sign-in')}>Sign in</Button>
                     </ButtonGroup>
                 </form>
-                <Link to='/sign-in'>Sign in</Link>
             </Box>
         </>
     );

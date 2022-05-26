@@ -4,6 +4,19 @@ import {Firestore} from "firebase/firestore";
 import firebase from "firebase/compat";
 import DocumentData = firebase.firestore.DocumentData;
 
+export interface IUserInfo {
+    email: string | undefined;
+    password: string | undefined;
+    firstName: string | undefined;
+    lastName: string | undefined;
+    birthDate: string | undefined;
+    countryOfBirth: string | undefined;
+    countryOfResidence: string | undefined;
+    cityOfResidence: string | undefined;
+    avatar: string | undefined;
+    bgImg: string | undefined;
+}
+
 export interface INavbar {
     openMenu(): void;
 }
@@ -66,17 +79,6 @@ export interface IAuthContext {
 
 export type TypeSetState<T> = Dispatch<SetStateAction<T>>;
 
-export interface IUserInfo {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    birthDate: string;
-    countryOfBirth: string;
-    countryOfResidence: string;
-    cityOfResidence: string;
-}
-
 export interface INeedData {
-    data: IUserInfo
+    data: any
 }

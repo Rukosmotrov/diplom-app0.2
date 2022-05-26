@@ -18,8 +18,6 @@ const Posts:FC = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setPosts(docSnap.data().posts);
-            console.log('Posts: ', posts);
-            console.log('Posts length: ', posts.length);
         } else {
             return console.log("No such document!");
         }
@@ -48,7 +46,6 @@ const Posts:FC = () => {
     useEffect( () => {
         if (canUpload) {
             addPostToDoc();
-            console.log('Posts: ', posts);
         }
     }, [posts]);
 

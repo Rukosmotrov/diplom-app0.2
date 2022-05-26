@@ -1,4 +1,4 @@
-import React, {FC, useContext, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
     Avatar,
     Card,
@@ -14,7 +14,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from '@mui/icons-material/Comment';
 import ShareIcon from "@mui/icons-material/Share";
 import CloseIcon from '@mui/icons-material/Close';
-import {IPost} from "../../interfaces";
+import {IPost, IUserInfo} from "../../interfaces";
 import {useAuth} from "../providers/useAuth";
 import {doc, getDoc} from "firebase/firestore";
 
@@ -28,19 +28,13 @@ const Post:FC<IPost> = ({
                             author
 }) => {
     const {user, db} = useAuth();
-    const [data, setData] = useState<any>({
-        firstName: '',
-        lastName: '',
-        cityOfResidence: '',
-        countryOfBirth: '',
-        birthDate: ''
-    });
+    const [data, setData] = useState<IUserInfo>();
 
     const getUserDataFromDoc = async () => {
         const docRef = doc(db, `${user?.email}`, "userData");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            setData(docSnap.data());
+            setData(docSnap.data().data);
         } else {
             return console.log("No such document!");
         }
@@ -54,8 +48,8 @@ const Post:FC<IPost> = ({
         <Grid item>
             <Card>
                     <CardHeader
-                        avatar={<Link href='/profile'><Avatar src={author ? author.avatar : ''}/></Link>}
-                        title={<Link href='/profile' underline='none'>{data.firstName+ ' ' + data.lastName}</Link>}
+                        avatar={<Link href='/profile'><Avatar src={data?.avatar}/></Link>}
+                        title={<Link href='/profile' underline='none'>{`${data?.firstName} ${data?.lastName}`}</Link>}
                         subheader={time}
                         action={
                             <IconButton aria-label="settings" onClick={() => remove ? remove(id) : remove}>

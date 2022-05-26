@@ -1,7 +1,7 @@
 import {createContext, Dispatch, FC, SetStateAction, useState, useEffect, useMemo} from "react";
 import {IAuthContext, IUser, TypeSetState} from "../../interfaces";
 import {getAuth, onAuthStateChanged, Auth} from 'firebase/auth';
-import {getFirestore, Firestore, setDoc, doc} from 'firebase/firestore'
+import {getFirestore, Firestore, setDoc, doc, getDoc} from 'firebase/firestore'
 import {generalUserData} from '../data/generalUserData';
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);

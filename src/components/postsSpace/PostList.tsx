@@ -4,6 +4,7 @@ import Post from "./Post";
 import {Grid, Typography} from "@mui/material";
 
 const PostList:FC<IPostListProps> = ({posts, onRemove}) => {
+
     return (
         <>
             {posts.length !== 0

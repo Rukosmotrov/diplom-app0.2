@@ -4,7 +4,7 @@ import {IUserData} from "../../../interfaces";
 import classes from '../../styles/authPage.module.scss';
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import {useAuth} from "../../providers/useAuth";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 
 const SignInPage:FC = () => {
@@ -12,6 +12,7 @@ const SignInPage:FC = () => {
     const [isRegError, setRegError] = useState(false);
     const regError = useRef('');
     const [userData, setUserData] = useState<IUserData>({email:'', password:''} as IUserData);
+    const navigate = useNavigate();
 
     const handleSignIn = async (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -49,11 +50,11 @@ const SignInPage:FC = () => {
                         required
                     />
                     <br/><br/>
-                    <ButtonGroup variant='text' sx={{display:'flex', justifyContent:'center'}}>
-                        <Button type='submit'>Sign in</Button>
+                    <ButtonGroup variant='text' sx={{display:'flex', justifyContent:'space-between'}}>
+                        <Button type='submit' variant='contained'>Sign in</Button>
+                        <Button onClick={() => navigate('/sign-up')}>Sign up</Button>
                     </ButtonGroup>
                 </form>
-                <Link to='/sign-up'>Sign up</Link>
             </Box>
         </>
     );

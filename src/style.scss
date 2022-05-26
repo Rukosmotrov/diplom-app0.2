@@ -16,7 +16,17 @@ $thirdColor: #5689c0;
 }
 .avatar{
   position: relative;
-  height: 350px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px solid #eaebed;
+}
+
+.user-header {
+  background: rgba(0, 128, 128, 0.56);
+  border-radius: 16px;
+  height: 250px;
+  padding: 1rem;
 }
 
 .footer {
