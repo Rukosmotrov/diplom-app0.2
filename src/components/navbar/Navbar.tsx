@@ -16,26 +16,26 @@ import {INavbar, IUserInfo} from "../../interfaces";
 import {useAuth} from "../providers/useAuth";
 import {doc, getDoc} from "firebase/firestore";
 
-const Navbar:FC<INavbar> = ({openMenu}) => {
+const Navbar:FC<INavbar> = ({openMenu, data}) => {
     const [searchActive, setSearchActive] = useState<boolean>(false);
     const {user, db} = useAuth();
-    const [data, setData] = useState<IUserInfo>();
-
-    const getUserDataFromDoc = async () => {
-        const docRef = doc(db, `${user?.email}`, "userData");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            setData(docSnap.data().data);
-            console.log('navbar docSnap: ', docSnap.data().data);
-            console.log('navbar data: ', data);
-        } else {
-            return console.log("No such document!");
-        }
-    }
-
-    useEffect(() => {
-        getUserDataFromDoc();
-    }, []);
+    // const [data, setData] = useState<IUserInfo>();
+    //
+    // const getUserDataFromDoc = async () => {
+    //     const docRef = doc(db, `${user?.email}`, "userData");
+    //     const docSnap = await getDoc(docRef);
+    //     if (docSnap.exists()) {
+    //         setData(docSnap.data().data);
+    //         console.log('navbar docSnap: ', docSnap.data().data);
+    //         console.log('navbar data: ', data);
+    //     } else {
+    //         return console.log("No such document!");
+    //     }
+    // }
+    //
+    // useEffect(() => {
+    //     getUserDataFromDoc();
+    // }, []);
 
     return (
         user
@@ -71,20 +71,6 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
                         />
                     </Box>
                     <Box>
-                        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="error">
-                                <MailIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton
-                            size="large"
-                            aria-label="show 17 new notifications"
-                            color="inherit"
-                        >
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
                         <IconButton
                             size="large"
                             edge="end"

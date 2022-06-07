@@ -23,10 +23,17 @@ $thirdColor: #5689c0;
 }
 
 .user-header {
-  background: rgba(0, 128, 128, 0.56);
-  border-radius: 16px;
+  border-radius: 16px 16px 0 0;
   height: 250px;
   padding: 1rem;
+}
+.user-header-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  height: 2rem;
+  padding: 1rem 2rem;
 }
 
 .footer {

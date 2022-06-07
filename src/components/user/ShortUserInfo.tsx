@@ -46,7 +46,7 @@ const ShortUserInfo:FC = () => {
                         <ListItemIcon>
                             <ChildFriendlyIcon/>
                         </ListItemIcon>
-                        <ListItemText primary={`Borth date: ${data?.birthDate}`}/>
+                        <ListItemText primary={`Birth date: ${data?.birthDate}`}/>
                     </ListItem>
                 </List>
             </Card>

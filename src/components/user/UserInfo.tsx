@@ -36,25 +36,21 @@ const UserInfo:FC = () => {
     return (
         <Grid container spacing={5} direction='row'>
             <Grid item xs={12}>
-                <div className='user-header'>
-                    <Grid container spacing={5} direction='row'>
-                        <Grid item xs={2}>
-                            <Avatar alt='User' src={data?.avatar} sx={{
-                                position: 'relative',
-                                width: '150px',
-                                height: '150px',
-                                border: '2px solid #eaebed',
-                            }}/>
-                        </Grid>
-                        <Grid item xs={10}>
-                            <Typography variant={'h5'} sx={{mt:10, color:'#eaebed'}}>{`${data?.firstName} ${data?.lastName}`}</Typography>
-                        </Grid>
-                    </Grid>
-                    <CardActions sx={{mt:5}}>
-                        <Button variant='contained' sx={{width:'200px'}}>Follow</Button>
-                        <Button variant='contained' sx={{width:'200px'}}>Message</Button>
-                    </CardActions>
+                <div className='user-header' style={{backgroundImage: `url(${data?.bgImg})`}}>
+                    <Avatar alt='User' src={data?.avatar} sx={{
+                        position: 'relative',
+                        width: '150px',
+                        height: '150px',
+                        border: '5px solid #eaebed',
+                    }}/>
                 </div>
+                <Card className='user-header-bottom'>
+                    <Typography variant={'h5'}>{`${data?.firstName} ${data?.lastName}`}</Typography>
+                    <CardActions>
+                        <Button variant='contained' sx={{width:'150px', m:'0 20px'}}>Follow</Button>
+                        <Button variant='contained' sx={{width:'150px', m:'0 20px'}}>Message</Button>
+                    </CardActions>
+                </Card>
             </Grid>
             {/*<Grid item xs={3}>*/}
             {/*    <Card className='avatar' sx={{p:1}}>*/}

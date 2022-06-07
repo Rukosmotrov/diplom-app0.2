@@ -33,6 +33,9 @@ const SignUpPage:FC = () => {
             await setDoc(doc(db, userData.email, "posts"), {
                 posts: []
             });
+            await setDoc(doc(db, userData.email, "messages"), {
+                messages: []
+            });
             await setDoc(doc(db, userData.email, "userData"), {
                 data: {
                     email: userData.email,
@@ -43,8 +46,8 @@ const SignUpPage:FC = () => {
                     countryOfBirth: userInfo.countryOfBirth,
                     countryOfResidence: userInfo.countryOfResidence,
                     cityOfResidence: userInfo.cityOfResidence,
-                    avatar: '39013212.jpg',
-                    bgImg: 'painting-3135875_960_720.jpg'
+                    avatar: '',
+                    bgImg: 'light_faded_background_85547_1920x1080.jpg'
                 }
             });
         } catch (error:any) {

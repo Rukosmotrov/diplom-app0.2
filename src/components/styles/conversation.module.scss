@@ -1,0 +1,56 @@
+.convBox {
+  width: calc(80% - 10px);
+  height: 70vh;
+  margin-top: 10px;
+  background-color: #eaebed;
+  border: 5px solid #244d61;
+  border-radius: 16px 16px 0 0;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.message {
+  margin: 10px;
+  padding: 10px;
+  background-color: #5689c0;
+  color: #eaebed;
+  border-radius: 16px;
+  max-width: 200px;
+}
+
+.inputBox {
+  width: 80%;
+  background-color: #244d61;
+  height: auto;
+  border-radius: 0 0 16px 16px;
+  padding: 10px;
+  z-index: 1;
+
+  & > Button {
+    background-color: #eaebed;
+  }
+}
+
+.sendBtn {
+  background-color: #eaebed;
+  z-index: 2;
+  &:hover {
+    background-color: #eaebed;
+  }
+}
+
+.wrapper {
+  width: 80%;
+  background-color: #eaebed;
+  border-radius: 16px;
+  position: relative;
+  padding: 5px;
+}
+.wrapper > input{
+  background: transparent;
+  margin-top: 5px;
+  border: none;
+  outline: none;
+  text-align: center;
+  width: 100%;
+}

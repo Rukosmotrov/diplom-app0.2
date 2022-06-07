@@ -18,27 +18,28 @@ import {useAuth} from "../providers/useAuth";
 import {signOut} from 'firebase/auth';
 import {useImportUserData} from "../hooks/useImportUserData";
 import {doc, getDoc} from "firebase/firestore";
+import MailIcon from "@mui/icons-material/Mail";
 
-const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
+const Menu:FC<IMenu> = ({menuOpen, closeMenu, data}) => {
     const navigate = useNavigate();
     const {user, ga, db} = useAuth();
-    const [data, setData] = useState<IUserInfo>();
-
-    const getUserDataFromDoc = async () => {
-        const docRef = doc(db, `${user?.email}`, "userData");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            setData(docSnap.data().data);
-            console.log('menu docSnap: ', docSnap.data().data);
-            console.log('menu data: ', data);
-        } else {
-            return console.log("No such document!");
-        }
-    }
-
-    useEffect(() => {
-        getUserDataFromDoc();
-    }, []);
+    // const [data, setData] = useState<IUserInfo>();
+    //
+    // const getUserDataFromDoc = async () => {
+    //     const docRef = doc(db, `${user?.email}`, "userData");
+    //     const docSnap = await getDoc(docRef);
+    //     if (docSnap.exists()) {
+    //         setData(docSnap.data().data);
+    //         console.log('menu docSnap: ', docSnap.data().data);
+    //         console.log('menu data: ', data);
+    //     } else {
+    //         return console.log("No such document!");
+    //     }
+    // }
+    //
+    // useEffect(() => {
+    //     getUserDataFromDoc();
+    // }, []);
 
     return (
         <Drawer
@@ -51,28 +52,48 @@ const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
                     <Card>
                         <CardHeader
                             avatar={<Avatar alt='User' src={data?.avatar}/>}
-                            title={data?.firstName + ' ' + data?.lastName}
+                            title={`${data?.firstName} ${data?.lastName}`}
                             subheader={'online'}
                         />
                     </Card>
                     <Divider/>
                 </ListItem>
                 {MenuData.map(item => {
-                    return (
-                        <ListItem key={item.path}>
-                            <Button
-                                sx={{width:'100%'}}
-                                onClick={() => {
-                                    navigate(item.path);
-                                    closeMenu();
-                                }}>
-                                <ListItemIcon>
-                                    <item.icon/>
-                                </ListItemIcon>
-                                <ListItemText primary={item.pageName}/>
-                            </Button>
-                        </ListItem>
-                    )
+                    if (item.path !== '/messages') {
+                        return (
+                            <ListItem key={item.path}>
+                                <Button
+                                    sx={{width:'100%'}}
+                                    onClick={() => {
+                                        navigate(item.path);
+                                        closeMenu();
+                                    }}>
+                                    <ListItemIcon>
+                                        <item.icon/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.pageName}/>
+                                </Button>
+                            </ListItem>
+                        )
+                    } else {
+                        return (
+                            <ListItem key={item.path}>
+                                <Button
+                                    sx={{width:'100%'}}
+                                    onClick={() => {
+                                        navigate(item.path);
+                                        closeMenu();
+                                    }}>
+                                    <ListItemIcon>
+                                        <Badge badgeContent={4} color="error">
+                                            <MailIcon />
+                                        </Badge>
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.pageName}/>
+                                </Button>
+                            </ListItem>
+                        )
+                    }
                 })}
                 <ListItem>
                     <Button onClick={() => {

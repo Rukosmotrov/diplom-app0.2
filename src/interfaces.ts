@@ -19,6 +19,7 @@ export interface IUserInfo {
 
 export interface INavbar {
     openMenu(): void;
+    data: any;
 }
 
 export interface IPost {
@@ -34,6 +35,7 @@ export interface IPost {
 export interface IMenu {
     menuOpen: boolean;
     closeMenu(): void;
+    data: any;
 }
 
 export interface ICreatingPost {
@@ -81,4 +83,9 @@ export type TypeSetState<T> = Dispatch<SetStateAction<T>>;
 
 export interface INeedData {
     data: any
+}
+
+export interface IMessage {
+    user: IUser;
+    message: string;
 }
