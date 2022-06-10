@@ -20,26 +20,24 @@ import {useImportUserData} from "../hooks/useImportUserData";
 import {doc, getDoc} from "firebase/firestore";
 import MailIcon from "@mui/icons-material/Mail";
 
-const Menu:FC<IMenu> = ({menuOpen, closeMenu, data}) => {
+const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
     const navigate = useNavigate();
     const {user, ga, db} = useAuth();
-    // const [data, setData] = useState<IUserInfo>();
-    //
-    // const getUserDataFromDoc = async () => {
-    //     const docRef = doc(db, `${user?.email}`, "userData");
-    //     const docSnap = await getDoc(docRef);
-    //     if (docSnap.exists()) {
-    //         setData(docSnap.data().data);
-    //         console.log('menu docSnap: ', docSnap.data().data);
-    //         console.log('menu data: ', data);
-    //     } else {
-    //         return console.log("No such document!");
-    //     }
-    // }
-    //
-    // useEffect(() => {
-    //     getUserDataFromDoc();
-    // }, []);
+    const [data, setData] = useState<IUserInfo>();
+
+    const getUserDataFromDoc = async () => {
+        const docRef = doc(db, `${user?.email}`, "userData");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            setData(docSnap.data().data);
+        } else {
+            return console.log("No such document!");
+        }
+    }
+
+    useEffect(() => {
+        getUserDataFromDoc();
+    }, []);
 
     return (
         <Drawer

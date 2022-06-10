@@ -16,26 +16,24 @@ import {INavbar, IUserInfo} from "../../interfaces";
 import {useAuth} from "../providers/useAuth";
 import {doc, getDoc} from "firebase/firestore";
 
-const Navbar:FC<INavbar> = ({openMenu, data}) => {
+const Navbar:FC<INavbar> = ({openMenu}) => {
     const [searchActive, setSearchActive] = useState<boolean>(false);
     const {user, db} = useAuth();
-    // const [data, setData] = useState<IUserInfo>();
-    //
-    // const getUserDataFromDoc = async () => {
-    //     const docRef = doc(db, `${user?.email}`, "userData");
-    //     const docSnap = await getDoc(docRef);
-    //     if (docSnap.exists()) {
-    //         setData(docSnap.data().data);
-    //         console.log('navbar docSnap: ', docSnap.data().data);
-    //         console.log('navbar data: ', data);
-    //     } else {
-    //         return console.log("No such document!");
-    //     }
-    // }
-    //
-    // useEffect(() => {
-    //     getUserDataFromDoc();
-    // }, []);
+    const [data, setData] = useState<IUserInfo>();
+
+    const getUserDataFromDoc = async () => {
+        const docRef = doc(db, `${user?.email}`, "userData");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            setData(docSnap.data().data);
+        } else {
+            return console.log("No such document!");
+        }
+    }
+
+    useEffect(() => {
+        getUserDataFromDoc();
+    }, []);
 
     return (
         user

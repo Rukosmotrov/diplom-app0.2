@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Route, Routes} from "react-router-dom";
 import {privateRoutes, publicRoutes} from "./list";
 import {useAuth} from "../providers/useAuth";
+import Navbar from "../navbar/Navbar";
+import Menu from "../menu/Menu";
+import {IUserInfo} from "../../interfaces";
+import {doc, getDoc} from "firebase/firestore";
 
 const Routers = () => {
     const {user} = useAuth();

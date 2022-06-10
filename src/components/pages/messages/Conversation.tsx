@@ -75,7 +75,7 @@ const Conversation:FC = () => {
                     )}
                 </Box>
                 <Box className={classes.inputBox}>
-                    <Box className={classes.wrapper}>
+                    <Box className={classes.wrapper} sx={{m:1}}>
                         <input
                             type="text"
                             placeholder='Повідомлення'
@@ -83,7 +83,7 @@ const Conversation:FC = () => {
                             onChange={e => setValue(e.target.value)}
                         />
                     </Box>
-                    <Button variant='outlined' onClick={sendMessage}><SendIcon/></Button>
+                    <Button variant='outlined' className={classes.sendBtn} onClick={sendMessage} sx={{m:1}}><SendIcon/></Button>
                 </Box>
                 {/*<Grid container direction='row' className={classes.inputBox}>*/}
                 {/*    <Grid item>*/}

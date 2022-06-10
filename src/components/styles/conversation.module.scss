@@ -1,10 +1,10 @@
 .convBox {
-  width: calc(80% - 10px);
+  width: 100%;
   height: 70vh;
   margin-top: 10px;
   background-color: #eaebed;
   border: 5px solid #244d61;
-  border-radius: 16px 16px 0 0;
+  border-radius: 0 16px 0 0;
   padding: 10px;
   overflow-y: auto;
 }
@@ -19,12 +19,14 @@
 }
 
 .inputBox {
-  width: 80%;
+  width: 100%;
   background-color: #244d61;
-  height: auto;
-  border-radius: 0 0 16px 16px;
+  height: 50px;
+  border-radius: 0 0 16px 0;
   padding: 10px;
-  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   & > Button {
     background-color: #eaebed;
@@ -33,9 +35,8 @@
 
 .sendBtn {
   background-color: #eaebed;
-  z-index: 2;
-  &:hover {
-    background-color: #eaebed;
+  &:hover > svg {
+    color: #eaebed;
   }
 }
 

@@ -12,10 +12,14 @@ import MusicBox from "../../user/MusicBox";
 import {doc, getDoc} from "firebase/firestore";
 import {useAuth} from "../../providers/useAuth";
 import {IUserInfo} from "../../../interfaces";
+import Navbar from "../../navbar/Navbar";
+import Menu from "../../menu/Menu";
 
 const Profile:FC = () => {
+    const [isMenuOpen, setMenuOpen] = useState(false);
     return (
         <Container>
+            <Navbar openMenu={() => setMenuOpen(true)}/>
             <UserInfo/>
             <Grid container spacing={5} direction='row'>
                 <Grid item xs={5}>
@@ -29,6 +33,7 @@ const Profile:FC = () => {
                     <Posts/>
                 </Grid>
             </Grid>
+            <Menu menuOpen={isMenuOpen} closeMenu={() => setMenuOpen(false)}/>
         </Container>
     );
 };

@@ -12,7 +12,9 @@ import {
     AccordionDetails,
     Card,
     Box,
-    Grid, Avatar, TextField
+    Grid, Avatar, TextField,
+    Snackbar,
+    Alert
 } from "@mui/material";
 import ImageUploader from "../utils/ImageUploader";
 import {generalUserData} from '../data/generalUserData';
@@ -22,12 +24,18 @@ import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {IUserInfo} from "../../interfaces";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ImageIcon from '@mui/icons-material/Image';
+import Navbar from "../navbar/Navbar";
+import Menu from "../menu/Menu";
 
 const SettingsPage:FC = () => {
     const [isAvatarChanging, setAvatarChanging] = useState(false);
     const [isBgChanging, setBgChanging] = useState(false);
     const {user, db} = useAuth();
     const [data, setData] = useState<IUserInfo>();
+    const [users, setUsers] = useState<any>();
+    const [isMenuOpen, setMenuOpen] = useState(false);
+    const [newUserInfo, setNewUserInfo] = useState<any>(data);
+    const [isSettingsDone, setIsSettingsDone] = useState<boolean>(false);
 
     const getUserDataFromDoc = async () => {
         const docRef = doc(db, `${user?.email}`, "userData");
@@ -39,35 +47,50 @@ const SettingsPage:FC = () => {
         }
     }
 
+    const getUsersFromDoc = async () => {
+        const usersNamesRef = doc(db, "usersList", "users");
+        const docSnap = await getDoc(usersNamesRef);
+        if (docSnap.exists()) {
+            setUsers(docSnap.data());
+        } else {
+            return console.log("No such document!");
+        }
+    }
+
     useEffect(() => {
         getUserDataFromDoc();
+        getUsersFromDoc();
     }, []);
 
     const changeAvatar = async (newAvatar:string | undefined) => {
-        const postDocRef = doc(db, `${user?.email}`, "userData");
-        await updateDoc(postDocRef, {
-            data: {...data, avatar: newAvatar}
-        });
+        setNewUserInfo({...newUserInfo, avatar: newAvatar});
     }
 
     const changeBgImg = async (newBgImg:string | undefined) => {
-        const postDocRef = doc(db, `${user?.email}`, "userData");
-        await updateDoc(postDocRef, {
-            data: {...data, bgImg: newBgImg}
-        });
+        setNewUserInfo({...newUserInfo, bgImg: newBgImg});
     }
-
-    const [newUserInfo, setNewUserInfo] = useState<any>(data);
 
     const updateUserData = async () => {
         const postDocRef = doc(db, `${user?.email}`, "userData");
         await updateDoc(postDocRef, {
             data: {...data, ...newUserInfo}
         });
+        const usersNamesRef = doc(db, "usersList", "users");
+        await updateDoc(usersNamesRef, {
+            [`${data?.firstName} ${data?.lastName}`]: {
+                email: newUserInfo.email ? newUserInfo.email : data?.email,
+                firstName: newUserInfo.firstName ? newUserInfo.firstName : data?.firstName,
+                lastName: newUserInfo.lastName ? newUserInfo.lastName : data?.lastName,
+                avatar: newUserInfo.lastName ? newUserInfo.lastName : data?.lastName,
+                name: `${newUserInfo.firstName ? newUserInfo.firstName : data?.firstName} ${newUserInfo.lastName ? newUserInfo.lastName : data?.lastName}`
+            }
+        });
+        setIsSettingsDone(true);
     }
 
     return (
         <Container sx={{p:5}}>
+            <Navbar openMenu={() => setMenuOpen(true)}/>
             <Card sx={{p:2}}>
                 <Grid container direction='column' spacing={2}>
                     <Grid item sx={{display: 'flex', justifyContent: 'center'}}>
@@ -177,6 +200,16 @@ const SettingsPage:FC = () => {
                 <br/>
                 <Button variant='contained' onClick={updateUserData}>Save</Button>
             </Card>
+            <Snackbar
+                autoHideDuration={4000}
+                anchorOrigin={{vertical:'bottom', horizontal:'right'}}
+                open={isSettingsDone}
+                onClose={() => setIsSettingsDone(false)}
+                key={'bottom' + 'right'}
+            >
+                <Alert severity="success">Налаштування збережені</Alert>
+            </Snackbar>
+            <Menu menuOpen={isMenuOpen} closeMenu={() => setMenuOpen(false)}/>
         </Container>
     );
 };

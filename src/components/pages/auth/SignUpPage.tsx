@@ -4,12 +4,13 @@ import {IUserData, IUserInfo} from "../../../interfaces";
 import classes from '../../styles/authPage.module.scss'
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../../providers/useAuth";
-import {createUserWithEmailAndPassword} from 'firebase/auth';
-import {setDoc, doc} from 'firebase/firestore';
+import {createUserWithEmailAndPassword, getAuth, sendEmailVerification} from 'firebase/auth';
+import {setDoc, doc, getDoc, updateDoc, addDoc, collection} from 'firebase/firestore';
+import Navbar from "../../navbar/Navbar";
 
 const SignUpPage:FC = () => {
     const navigate = useNavigate();
-    const {ga, db} = useAuth();
+    const {user, ga, db} = useAuth();
     const [isRegError, setRegError] = useState(false);
     const regError = useRef('');
     const [userData, setUserData] = useState<IUserData>({email:'', password:''} as IUserData);
@@ -25,6 +26,7 @@ const SignUpPage:FC = () => {
         avatar: '',
         bgImg: ''
     });
+    const [userNames, setUserNames] = useState<any>();
 
     const handleSignUp = async (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -50,6 +52,38 @@ const SignUpPage:FC = () => {
                     bgImg: 'light_faded_background_85547_1920x1080.jpg'
                 }
             });
+            const fullName = `${userInfo.firstName} ${userInfo.lastName}`;
+            const usersNamesRef = doc(db, "usersList", "users");
+            const docSnap = await getDoc(usersNamesRef);
+            await updateDoc(usersNamesRef, {
+                [docSnap.data()?.length]: {
+                    email: userData.email,
+                    firstName: userInfo.firstName,
+                    lastName: userInfo.lastName,
+                    avatar: '',
+                    name: fullName
+                }
+            });
+            // await setDoc(doc(db, "usersList", `${userInfo.firstName} ${userInfo.lastName}`), {
+            //     email: userData.email,
+            //     firstName: userInfo.firstName,
+            //     lastName: userInfo.lastName,
+            //     avatar: '',
+            // });
+            // const userNamesRef = doc(db, `adminData`, 'userNames');
+            // const docSnap = await getDoc(userNamesRef);
+            // if (docSnap.exists()) {
+            //     await setUserNames(docSnap.data().data);
+            //     await setUserNames([...userNames, `${userInfo.firstName} ${userInfo.lastName}`]);
+            // } else {
+            //     return console.log("No such document!");
+            // }
+            // if (userNames) {
+            //     await updateDoc(userNamesRef, {
+            //         names : userNames
+            //     });
+            // }
+            // console.log('User names', userNames);
         } catch (error:any) {
             error.message && console.log(error.message);
             setRegError(true);
@@ -61,6 +95,7 @@ const SignUpPage:FC = () => {
 
     return (
         <>
+            <Navbar/>
             {isRegError && <Alert severity="error" sx={{m:'1rem 0'}}>{regError.current}</Alert>}
             <Box className={classes.authBox}>
                 <form onSubmit={handleSignUp} className={classes.authForm}>

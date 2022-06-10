@@ -15,40 +15,22 @@ import {doc, getDoc} from "firebase/firestore";
 import Loader from "./components/loader/Loader";
 
 const Main:FC = () => {
-    const [isMenuOpen, setMenuOpen] = useState(false);
+    // const [isMenuOpen, setMenuOpen] = useState(false);
     const {user, db, ga} = useAuth();
-    const [data, setData] = useState<IUserInfo>();
 
-    const getUserDataFromDoc = async () => {
-        const docRef = doc(db, `${user?.email}`, "userData");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            setData(docSnap.data().data);
-            console.log('main docSnap: ', docSnap.data().data);
-            console.log('main data: ', data);
-        } else {
-            return console.log("No such document!");
-        }
-    }
-
-    useEffect(() => {
-        getUserDataFromDoc();
-    }, []);
-
-    if (!user) {
-        return <Loader/>
-    }
+    // if (!user) {
+    //     return <Loader/>
+    // }
 
     return (
         <BrowserRouter>
             <Box className='main'>
-                <Navbar openMenu={() => setMenuOpen(true)} data={data}/>
+                {/*<Navbar openMenu={() => setMenuOpen(true)}/>*/}
                 <Container>
                     <Routers/>
                 </Container>
-                <Menu menuOpen={isMenuOpen} closeMenu={() => setMenuOpen(false)} data={data}/>
+                {/*<Menu menuOpen={isMenuOpen} closeMenu={() => setMenuOpen(false)} data={data}/>*/}
             </Box>
-            <Footer/>
         </BrowserRouter>
     );
 };

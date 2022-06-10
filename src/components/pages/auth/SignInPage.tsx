@@ -1,10 +1,12 @@
 import React, {FC, SyntheticEvent, useState, useRef, useEffect} from 'react';
 import {TextField, ButtonGroup, Button, Box, Alert} from "@mui/material";
-import {IUserData} from "../../../interfaces";
+import {IUserData, IUserInfo} from "../../../interfaces";
 import classes from '../../styles/authPage.module.scss';
 import {signInWithEmailAndPassword} from 'firebase/auth';
 import {useAuth} from "../../providers/useAuth";
 import {Link, useNavigate} from "react-router-dom";
+import Navbar from "../../navbar/Navbar";
+import {doc, getDoc} from "firebase/firestore";
 
 
 const SignInPage:FC = () => {
@@ -29,6 +31,7 @@ const SignInPage:FC = () => {
 
     return (
         <>
+            <Navbar/>
             {isRegError && <Alert severity="error" sx={{m:'1rem 0'}}>{regError.current}</Alert>}
             <Box className={classes.authBox}>
                 <form onSubmit={handleSignIn} className={classes.authForm}>

@@ -4,8 +4,8 @@ import SettingsPage from "../pages/SettingsPage";
 import PageNotFound from "../pages/PageNotFound";
 import FriendsPage from "../pages/FriendsPage";
 import Profile from "../pages/profile/Profile";
-import SignInPage from "../pages/auth/SignInPage";
 import SignUpPage from "../pages/auth/SignUpPage";
+import SignInPage from "../pages/auth/SignInPage";
 
 export const privateRoutes = [
     {
@@ -67,6 +67,6 @@ export const publicRoutes = [
     },
     {
         path: '*',
-        element: SignInPage
+        element:SignInPage
     }
 ];

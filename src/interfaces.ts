@@ -18,8 +18,7 @@ export interface IUserInfo {
 }
 
 export interface INavbar {
-    openMenu(): void;
-    data: any;
+    openMenu?(): void;
 }
 
 export interface IPost {
@@ -35,7 +34,6 @@ export interface IPost {
 export interface IMenu {
     menuOpen: boolean;
     closeMenu(): void;
-    data: any;
 }
 
 export interface ICreatingPost {
