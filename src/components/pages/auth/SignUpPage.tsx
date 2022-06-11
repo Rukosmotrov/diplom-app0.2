@@ -24,9 +24,41 @@ const SignUpPage:FC = () => {
         countryOfResidence: '',
         cityOfResidence: '',
         avatar: '',
-        bgImg: ''
+        bgImg: '',
+        dateOfReg: `${Date.now()}`
     });
-    const [userNames, setUserNames] = useState<any>();
+    const [userNamesFromDoc, setUserNamesFromDoc] = useState<any>([]);
+    const [userNamesToDoc, setUserNamesToDoc] = useState<any>({
+        email: '',
+        firstName: '',
+        lastName: '',
+        avatar: '',
+        name: '',
+        dateOfReg: ''
+    });
+    const [infoDone, setInfoDone] = useState<boolean>(false);
+
+    const getUsers = async () => {
+        const usersNamesRef = doc(db, "usersList", "users");
+        const docSnapUsers = await getDoc(usersNamesRef);
+        if (docSnapUsers.exists()) {
+            setUserNamesFromDoc(docSnapUsers.data().list);
+        } else {
+            return console.log("No such document!");
+        }
+    }
+
+    useEffect(() => {
+        getUsers();
+        setUserNamesToDoc([...userNamesFromDoc, {
+            email: userData.email,
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName,
+            avatar: '',
+            name: `${userInfo.firstName} ${userInfo.lastName}`,
+            dateOfReg: userInfo.dateOfReg
+        }]);
+    }, [userInfo]);
 
     const handleSignUp = async (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -49,21 +81,24 @@ const SignUpPage:FC = () => {
                     countryOfResidence: userInfo.countryOfResidence,
                     cityOfResidence: userInfo.cityOfResidence,
                     avatar: '',
-                    bgImg: 'light_faded_background_85547_1920x1080.jpg'
+                    bgImg: 'light_faded_background_85547_1920x1080.jpg',
+                    dateOfReg: userInfo.dateOfReg
                 }
-            });
-            const fullName = `${userInfo.firstName} ${userInfo.lastName}`;
+            })
+
             const usersNamesRef = doc(db, "usersList", "users");
-            const docSnap = await getDoc(usersNamesRef);
             await updateDoc(usersNamesRef, {
-                [docSnap.data()?.length]: {
-                    email: userData.email,
-                    firstName: userInfo.firstName,
-                    lastName: userInfo.lastName,
-                    avatar: '',
-                    name: fullName
-                }
+                list: userNamesToDoc
             });
+            // await updateDoc(usersNamesRef, {
+            //     [`${userInfo.dateOfReg}`]: {
+            //         email: userData.email,
+            //         firstName: userInfo.firstName,
+            //         lastName: userInfo.lastName,
+            //         avatar: '',
+            //         name: fullName
+            //     }
+            // });
             // await setDoc(doc(db, "usersList", `${userInfo.firstName} ${userInfo.lastName}`), {
             //     email: userData.email,
             //     firstName: userInfo.firstName,

@@ -15,6 +15,7 @@ export interface IUserInfo {
     cityOfResidence: string | undefined;
     avatar: string | undefined;
     bgImg: string | undefined;
+    dateOfReg: string;
 }
 
 export interface INavbar {

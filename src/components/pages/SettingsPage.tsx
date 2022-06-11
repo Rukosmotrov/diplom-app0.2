@@ -32,7 +32,7 @@ const SettingsPage:FC = () => {
     const [isBgChanging, setBgChanging] = useState(false);
     const {user, db} = useAuth();
     const [data, setData] = useState<IUserInfo>();
-    const [users, setUsers] = useState<any>();
+    const [users, setUsers] = useState<any>([]);
     const [isMenuOpen, setMenuOpen] = useState(false);
     const [newUserInfo, setNewUserInfo] = useState<any>(data);
     const [isSettingsDone, setIsSettingsDone] = useState<boolean>(false);
@@ -51,7 +51,7 @@ const SettingsPage:FC = () => {
         const usersNamesRef = doc(db, "usersList", "users");
         const docSnap = await getDoc(usersNamesRef);
         if (docSnap.exists()) {
-            setUsers(docSnap.data());
+            setUsers(docSnap.data().list);
         } else {
             return console.log("No such document!");
         }
@@ -60,7 +60,13 @@ const SettingsPage:FC = () => {
     useEffect(() => {
         getUserDataFromDoc();
         getUsersFromDoc();
+        //setPosts(prev => prev.filter(item => item.id !== id));
     }, []);
+
+    const updateUser = () => {
+        return setUsers((prev: any) => prev.map((item: any) =>
+            item.dateOfReg === data?.dateOfReg && prev.splice(users.indexOf(item), 1)));
+    };
 
     const changeAvatar = async (newAvatar:string | undefined) => {
         setNewUserInfo({...newUserInfo, avatar: newAvatar});
@@ -71,19 +77,23 @@ const SettingsPage:FC = () => {
     }
 
     const updateUserData = async () => {
+        updateUser();
         const postDocRef = doc(db, `${user?.email}`, "userData");
         await updateDoc(postDocRef, {
             data: {...data, ...newUserInfo}
         });
         const usersNamesRef = doc(db, "usersList", "users");
         await updateDoc(usersNamesRef, {
-            [`${data?.firstName} ${data?.lastName}`]: {
+            list: [...users, {
                 email: newUserInfo.email ? newUserInfo.email : data?.email,
                 firstName: newUserInfo.firstName ? newUserInfo.firstName : data?.firstName,
                 lastName: newUserInfo.lastName ? newUserInfo.lastName : data?.lastName,
-                avatar: newUserInfo.lastName ? newUserInfo.lastName : data?.lastName,
-                name: `${newUserInfo.firstName ? newUserInfo.firstName : data?.firstName} ${newUserInfo.lastName ? newUserInfo.lastName : data?.lastName}`
-            }
+                avatar: newUserInfo.avatar ? newUserInfo.avatar : data?.avatar,
+                dateOfReg: data?.dateOfReg,
+                name: `${newUserInfo.firstName ?
+                    newUserInfo.firstName : data?.firstName} ${newUserInfo.lastName ? newUserInfo.lastName :
+                    data?.lastName}`
+            }]
         });
         setIsSettingsDone(true);
     }

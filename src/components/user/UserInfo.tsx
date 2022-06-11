@@ -19,7 +19,6 @@ import {doc, getDoc} from "firebase/firestore";
 const UserInfo:FC = () => {
     const {user, db} = useAuth();
     const [data, setData] = useState<IUserInfo>();
-    const [names, setNames] = useState<any>();
 
     const getUserDataFromDoc = async () => {
         const docRef = doc(db, `${user?.email}`, "userData");
@@ -31,22 +30,8 @@ const UserInfo:FC = () => {
         }
     }
 
-    const getUsersFromDoc = async () => {
-        const docRef = doc(db, "usersNames", "names");
-        const docSnap = await getDoc(docRef);
-        const someDoc = [];
-        if (docSnap.exists()) {
-            docSnap.data().map((name:any) => setNames({...names, user: name}));
-            console.log('New names: ', names);
-        } else {
-            return console.log("No such document!");
-        }
-        //setNames({...names, user: name})
-    }
-
     useEffect(() => {
         getUserDataFromDoc();
-        getUsersFromDoc();
     }, []);
     return (
         <Grid container spacing={5} direction='row'>
