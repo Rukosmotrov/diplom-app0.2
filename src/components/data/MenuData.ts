@@ -7,7 +7,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 
 export const MenuData = [
     {
-        path: '/',
+        path: '/home',
         icon: AccountCircleIcon,
         pageName: 'Home page'
     },

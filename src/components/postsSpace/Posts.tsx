@@ -67,6 +67,7 @@ const Posts:FC = () => {
                 />
             </Card>
             <PostList posts={posts} onRemove={removePost}/>
+            <Box sx={{mt:5}}></Box>
             <CreatePost
                 postCreating={isPostCreating}
                 setPostCreating={setPostCreating}

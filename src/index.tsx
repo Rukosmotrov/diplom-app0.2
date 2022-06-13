@@ -13,13 +13,13 @@ const root = ReactDOM.createRoot(
 );
 
 firebase.initializeApp({
-  apiKey: "AIzaSyBK-oFPxXVWYn7Or8BY4F4tCETnSQWAdH0",
-  authDomain: "diplom-app-34192.firebaseapp.com",
-  projectId: "diplom-app-34192",
-  storageBucket: "diplom-app-34192.appspot.com",
-  messagingSenderId: "217515009857",
-  appId: "1:217515009857:web:d8f4a6032a0d0d5f0963c0",
-  measurementId: "G-QBYKM42CYQ"
+  apiKey: "AIzaSyDpSOBrs21oi0L6-N2XGod6F6-HQ_7qZo4",
+  authDomain: "diplom-app-a5ff8.firebaseapp.com",
+  projectId: "diplom-app-a5ff8",
+  storageBucket: "diplom-app-a5ff8.appspot.com",
+  messagingSenderId: "1097243595016",
+  appId: "1:1097243595016:web:617e375c445621739edcbd",
+  measurementId: "G-NZHV95EG7P"
 });
 
 const theme = createTheme({

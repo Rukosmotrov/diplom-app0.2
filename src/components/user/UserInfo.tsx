@@ -7,7 +7,8 @@ import {
     Grid,
     CardHeader,
     CardContent,
-    Typography, CardActions, ListItem, List, ListItemIcon, ListItemText, Avatar
+    Typography, CardActions, ListItem, List, ListItemIcon, ListItemText, Avatar,
+    Box
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import ChildFriendlyIcon from "@mui/icons-material/ChildFriendly";
@@ -46,53 +47,12 @@ const UserInfo:FC = () => {
                 </div>
                 <Card className='user-header-bottom'>
                     <Typography variant={'h5'}>{`${data?.firstName} ${data?.lastName}`}</Typography>
-                    <CardActions>
-                        <Button variant='contained' sx={{width:'150px', m:'0 20px'}}>Follow</Button>
-                        <Button variant='contained' sx={{width:'150px', m:'0 20px'}}>Message</Button>
-                    </CardActions>
+                    <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                        <Typography variant={'h6'} sx={{width:'150px', m:'0 20px'}}>Followers: 0</Typography>
+                        <Typography variant={'h6'} sx={{width:'150px', m:'0 20px'}}>Subscribes: 0</Typography>
+                    </Box>
                 </Card>
             </Grid>
-            {/*<Grid item xs={3}>*/}
-            {/*    <Card className='avatar' sx={{p:1}}>*/}
-            {/*        <CardMedia*/}
-            {/*            component='img'*/}
-            {/*            height='280px'*/}
-            {/*            image= {data?.avatar}*/}
-            {/*        />*/}
-            {/*        <CardActions sx={{display:'flex', justifyContent:'space-between'}}>*/}
-            {/*            <Button variant='contained' sx={{mt:2, width:'100px'}}>Follow</Button>*/}
-            {/*            <Button variant='contained' sx={{mt:2, width:'100px'}}>Message</Button>*/}
-            {/*        </CardActions>*/}
-            {/*    </Card>*/}
-            {/*</Grid>*/}
-            {/*<Grid item xs={9}>*/}
-            {/*    <Card sx={{p:1, height: '350px'}}>*/}
-            {/*        <CardContent>*/}
-            {/*            <Typography variant={'h5'}>{`${data?.firstName} ${data?.lastName}`}</Typography>*/}
-            {/*            <Divider/>*/}
-            {/*            <List>*/}
-            {/*                <ListItem>*/}
-            {/*                    <ListItemIcon>*/}
-            {/*                        <HomeIcon/>*/}
-            {/*                    </ListItemIcon>*/}
-            {/*                    <ListItemText primary={`Living in: ${data?.cityOfResidence}`}/>*/}
-            {/*                </ListItem>*/}
-            {/*                <ListItem>*/}
-            {/*                    <ListItemIcon>*/}
-            {/*                        <LocationOnIcon/>*/}
-            {/*                    </ListItemIcon>*/}
-            {/*                    <ListItemText primary={`Born in: ${data?.countryOfBirth}`}/>*/}
-            {/*                </ListItem>*/}
-            {/*                <ListItem>*/}
-            {/*                    <ListItemIcon>*/}
-            {/*                        <ChildFriendlyIcon/>*/}
-            {/*                    </ListItemIcon>*/}
-            {/*                    <ListItemText primary={`Birth date: ${data?.birthDate}`}/>*/}
-            {/*                </ListItem>*/}
-            {/*            </List>*/}
-            {/*        </CardContent>*/}
-            {/*    </Card>*/}
-            {/*</Grid>*/}
         </Grid>
     );
 };

@@ -6,6 +6,7 @@ import FriendsPage from "../pages/FriendsPage";
 import Profile from "../pages/profile/Profile";
 import SignUpPage from "../pages/auth/SignUpPage";
 import SignInPage from "../pages/auth/SignInPage";
+import SearchedUser from "../pages/searchedUser/SearchedUser";
 
 export const privateRoutes = [
     {
@@ -14,8 +15,8 @@ export const privateRoutes = [
         auth: true
     },
     {
-        path: '/profile:id',
-        element: Profile,
+        path: '/user/:id',
+        element: SearchedUser,
         auth: true
     },
     {
@@ -29,7 +30,7 @@ export const privateRoutes = [
         auth: true
     },
     {
-        path: '/friends:id',
+        path: '/friends/:id',
         element: FriendsPage,
         auth: true
     },

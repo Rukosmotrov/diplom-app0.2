@@ -10,9 +10,9 @@ const ConvsList = () => {
             sx={{
                 width: 'auto',
                 flexShrink: 0,
-                height: 'calc(70vh + 90px)',
+                height: 'calc(70vh + 86px)',
                 backgroundColor:'#eaebed',
-                border: '5px solid #244d61',
+                border: '2px solid grey',
                 paddingLeft:'15px',
                 mt:'10px',
                 borderRadius: '16px 0 0 16px'

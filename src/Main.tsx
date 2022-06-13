@@ -1,4 +1,4 @@
-import React, {FC, MutableRefObject, useRef, useState, useEffect} from 'react';
+import React, {FC, MutableRefObject, useRef, useState, useEffect, createContext} from 'react';
 import {
     Box, Container
 } from "@mui/material";
@@ -13,6 +13,7 @@ import {useAuth} from "./components/providers/useAuth";
 import {IUserInfo} from "./interfaces";
 import {doc, getDoc} from "firebase/firestore";
 import Loader from "./components/loader/Loader";
+
 
 const Main:FC = () => {
     // const [isMenuOpen, setMenuOpen] = useState(false);

@@ -25,7 +25,9 @@ const SignUpPage:FC = () => {
         cityOfResidence: '',
         avatar: '',
         bgImg: '',
-        dateOfReg: `${Date.now()}`
+        dateOfReg: `${Date.now()}`,
+        subscribes: [],
+        subscribers: []
     });
     const [userNamesFromDoc, setUserNamesFromDoc] = useState<any>([]);
     const [userNamesToDoc, setUserNamesToDoc] = useState<any>({
@@ -82,7 +84,9 @@ const SignUpPage:FC = () => {
                     cityOfResidence: userInfo.cityOfResidence,
                     avatar: '',
                     bgImg: 'light_faded_background_85547_1920x1080.jpg',
-                    dateOfReg: userInfo.dateOfReg
+                    dateOfReg: userInfo.dateOfReg,
+                    subscribes: [],
+                    subscribers: []
                 }
             })
 

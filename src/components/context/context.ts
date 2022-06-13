@@ -1,3 +1,3 @@
-import {Context, createContext, MutableRefObject, useRef} from 'react';
+import {createContext, useState} from 'react';
 
-// export const AuthContext: MutableRefObject<boolean> | Context<null> | Context<Context<MutableRefObject<boolean>>>  = createContext(null);
+export const UserContext = createContext<any>(null);

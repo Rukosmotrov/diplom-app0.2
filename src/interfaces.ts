@@ -16,6 +16,8 @@ export interface IUserInfo {
     avatar: string | undefined;
     bgImg: string | undefined;
     dateOfReg: string;
+    subscribes: any;
+    subscribers: any;
 }
 
 export interface INavbar {

@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, useContext, useEffect, useRef, useState} from 'react';
 import {
     Box,
     Container,
@@ -14,22 +14,28 @@ import {useAuth} from "../../providers/useAuth";
 import {IUserInfo} from "../../../interfaces";
 import Navbar from "../../navbar/Navbar";
 import Menu from "../../menu/Menu";
+import SearchedUserInfo from "./SearchedUserInfo";
+import SearchedUserShortInfo from "./SearchedUserShortInfo";
+import ShowAllSearchedUserFriends from "./ShowAllSearchedUserFriends";
+import {UserContext} from "../../context/context";
+import SearchedUserPosts from "./searchedUserPostsSpace/SearchedUserPosts";
 
-const Profile:FC = () => {
+const SearchedUser:FC = () => {
     const [isMenuOpen, setMenuOpen] = useState(false);
+
     return (
         <Container>
             <Navbar openMenu={() => setMenuOpen(true)}/>
-            <UserInfo/>
+            <SearchedUserInfo/>
             <Grid container spacing={5} direction='row'>
                 <Grid item xs={5}>
                     <Box className='leftSide'>
-                        <ShortUserInfo/>
-                        <ShowAllFriends/>
+                        <SearchedUserShortInfo/>
+                        <ShowAllSearchedUserFriends/>
                     </Box>
                 </Grid>
                 <Grid item xs={7}>
-                    <Posts/>
+                    <SearchedUserPosts/>
                 </Grid>
             </Grid>
             <Menu menuOpen={isMenuOpen} closeMenu={() => setMenuOpen(false)}/>
@@ -37,4 +43,4 @@ const Profile:FC = () => {
     );
 };
 
-export default Profile;
+export default SearchedUser;
