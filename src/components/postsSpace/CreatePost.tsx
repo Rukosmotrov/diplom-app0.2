@@ -23,12 +23,12 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
     }
     function onDropHandler(e: DragEvent<HTMLDivElement>) {
         e.preventDefault();
-        let file = e.dataTransfer.files[0].name;
-        let fileType =  file.split(".").splice(-1,1)[0];
+        let file = e.dataTransfer.files[0];
+        let fileType =  file.name.split(".").splice(-1,1)[0];
         if (fileType === 'bmp' || fileType === 'jpeg' || fileType === 'png' || fileType === 'tif' || fileType === 'tiff' || fileType === 'jpg') {
-            setPost({...post, img: file});
+            setPost({...post, img: file.name});
         } else {
-            errorText.current = 'Incorrect type of file';
+            errorText.current = 'Невірний тип файлу';
             setError(true);
             setTimeout(() => {
                 setError(false);
@@ -36,6 +36,26 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
             }, 1500)
         }
         setImageDropped(true);
+    }
+
+    const onClickChooseImage = (e :any) => {
+        let file = e.target.files[0];
+        let fileType =  file.name.split(".").splice(-1,1)[0];
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = () => {
+            if (fileType === 'bmp' || fileType === 'jpeg' || fileType === 'png' || fileType === 'tif' || fileType === 'tiff' || fileType === 'jpg') {
+                setPost({...post, img: file.name});
+                setImageDropped(true);
+            } else {
+                errorText.current = 'Невірний тип файлу';
+                setError(true);
+                setTimeout(() => {
+                    setError(false);
+                    setImageDropped(false);
+                }, 1500)
+            }
+        }
     }
 
     useEffect(() => {
@@ -101,7 +121,7 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
                             onDragStart={e => dragStartHandler(e)}
                             onDragLeave={e => dragLeaveHandler(e)}
                             onDragOver={e => dragStartHandler(e)}
-                        >Drag the file</Box>
+                        ><input onChange={onClickChooseImage} type='file'/>Drag the file</Box>
                     }
                 </Box>
                 <Box id="modal-modal-description">

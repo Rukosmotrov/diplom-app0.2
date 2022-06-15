@@ -94,35 +94,6 @@ const SignUpPage:FC = () => {
             await updateDoc(usersNamesRef, {
                 list: userNamesToDoc
             });
-            // await updateDoc(usersNamesRef, {
-            //     [`${userInfo.dateOfReg}`]: {
-            //         email: userData.email,
-            //         firstName: userInfo.firstName,
-            //         lastName: userInfo.lastName,
-            //         avatar: '',
-            //         name: fullName
-            //     }
-            // });
-            // await setDoc(doc(db, "usersList", `${userInfo.firstName} ${userInfo.lastName}`), {
-            //     email: userData.email,
-            //     firstName: userInfo.firstName,
-            //     lastName: userInfo.lastName,
-            //     avatar: '',
-            // });
-            // const userNamesRef = doc(db, `adminData`, 'userNames');
-            // const docSnap = await getDoc(userNamesRef);
-            // if (docSnap.exists()) {
-            //     await setUserNames(docSnap.data().data);
-            //     await setUserNames([...userNames, `${userInfo.firstName} ${userInfo.lastName}`]);
-            // } else {
-            //     return console.log("No such document!");
-            // }
-            // if (userNames) {
-            //     await updateDoc(userNamesRef, {
-            //         names : userNames
-            //     });
-            // }
-            // console.log('User names', userNames);
         } catch (error:any) {
             error.message && console.log(error.message);
             setRegError(true);

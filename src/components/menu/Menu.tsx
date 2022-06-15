@@ -49,7 +49,7 @@ const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
                 <ListItem>
                     <Card sx={{maxWidth: '300px'}}>
                         <CardHeader
-                            avatar={<Avatar alt='User' src={data?.avatar}/>}
+                            avatar={<Avatar alt='User' src={`/${data?.avatar}`}/>}
                             title={`${data?.firstName} ${data?.lastName}`}
                             subheader={'online'}
                         />

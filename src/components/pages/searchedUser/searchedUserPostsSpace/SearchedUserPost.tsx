@@ -47,7 +47,7 @@ const SearchedUserPost:FC<IPost> = ({
         <Grid item>
             <Card>
                 <CardHeader
-                    avatar={<Avatar src={data?.avatar}/>}
+                    avatar={<Avatar src={`/${data?.avatar}`}/>}
                     title={`${data?.firstName} ${data?.lastName}`}
                     subheader={time}
                 />
@@ -57,7 +57,7 @@ const SearchedUserPost:FC<IPost> = ({
                         <CardMedia
                             component="img"
                             height="300"
-                            image={img}
+                            image={`/${img}`}
                             alt={alt}
                         />
                         <Typography sx={{p:2}}>{description}</Typography>

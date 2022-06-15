@@ -16,10 +16,13 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import {IUserInfo} from "../../interfaces";
 import {useAuth} from "../providers/useAuth";
 import {doc, getDoc} from "firebase/firestore";
+import {useAuthState} from "react-firebase-hooks/auth";
+import Loader from "../loader/Loader";
 
 const UserInfo:FC = () => {
-    const {user, db} = useAuth();
+    const {user, db, ga} = useAuth();
     const [data, setData] = useState<IUserInfo>();
+    const [usr, loading, error] = useAuthState(ga);
 
     const getUserDataFromDoc = async () => {
         const docRef = doc(db, `${user?.email}`, "userData");
@@ -34,6 +37,11 @@ const UserInfo:FC = () => {
     useEffect(() => {
         getUserDataFromDoc();
     }, []);
+
+    if (loading) {
+        return <Loader/>
+    }
+
     return (
         <Grid container spacing={5} direction='row'>
             <Grid item xs={12}>

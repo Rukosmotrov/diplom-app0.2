@@ -70,4 +70,27 @@ $thirdColor: #5689c0;
   align-items: center;
   justify-content: center;
   margin-top: 10px;
+
+  & > input {
+    position: absolute;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: transparent;
+    height: 50px;
+    width: 120px;
+  }
+
+  & > input::-webkit-file-upload-button {
+    position: absolute;
+    background: transparent;
+    border: none;
+    outline: none;
+    height: 50px;
+    width: 120px;
+    color: transparent;
+  }
+  & > input::-webkit-file-upload-button:hover {
+    cursor: pointer;
+  }
 }

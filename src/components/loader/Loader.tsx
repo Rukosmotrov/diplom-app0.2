@@ -11,18 +11,12 @@ const Loader = () => {
             }}
             >
                 <Grid container sx={{
-                    width: '100px',
-                    background:'red',
+                    width: '200px',
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}
                 >
-                    <div className={classes.ldsRing}>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
+                    <span className={classes.loader}></span>
                 </Grid>
             </Grid>
         </Container>

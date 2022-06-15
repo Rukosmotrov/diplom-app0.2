@@ -60,7 +60,7 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
     }, []);
 
     const filterUsers = (searchText: any, listOfUsers: any) => {
-        if (!searchText) {
+        if (searchText == '') {
             return listOfUsers;
         }
         return listOfUsers.filter(({name}:any) =>
@@ -130,7 +130,7 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
                                         }
                                     }}>
                                         <Card className={classes.searchedUser} id={item.dateOfReg}>
-                                            <Avatar src={item.avatar}/>{item.name}
+                                            <Avatar src={`/${item.avatar}`}/>{item.name}
                                         </Card>
                                     </Button>
                                 )
@@ -146,7 +146,7 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
                             aria-haspopup="true"
                             color="inherit"
                         >
-                            <Avatar alt='User avatar' src={data?.avatar}/>
+                            <Avatar alt='User avatar' src={`/${data?.avatar}`}/>
                         </IconButton>
                     </Box>
                 </Toolbar>

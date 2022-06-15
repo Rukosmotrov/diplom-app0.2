@@ -2,9 +2,13 @@ import React, {useEffect, useRef, useState, FC} from 'react';
 import {Alert, Box, Button, Modal, Typography, Divider} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
-import {IImageUploader} from '../../interfaces'
+import {IImageUploader} from "../../interfaces";
+import {getStorage, ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
 
 const ImageUploader:FC<IImageUploader> = ({isOpen, closeModal, changer}) => {
+    const storage = getStorage();
+    const storageRef = ref(storage);
+
     const [imageDrag, setImageDrag] = useState(false);
     const [imageDropped, setImageDropped] = useState(false);
     const [isError, setError] = useState(false);
@@ -21,12 +25,12 @@ const ImageUploader:FC<IImageUploader> = ({isOpen, closeModal, changer}) => {
     }
     function onDropHandler(e: any) {
         e.preventDefault();
-        let file = e.dataTransfer.files[0].name;
-        let fileType =  file.split(".").splice(-1,1)[0];
+        let file = e.dataTransfer.files[0];
+        let fileType =  file.name.split(".").splice(-1,1)[0];
         if (fileType === 'bmp' || fileType === 'jpeg' || fileType === 'png' || fileType === 'tif' || fileType === 'tiff' || fileType === 'jpg') {
-            image.current = file;
+            image.current = file.name;
         } else {
-            errorText.current = 'Incorrect type of file';
+            errorText.current = 'Невірний тип файлу';
             setError(true);
             setTimeout(() => {
                 setError(false);
@@ -34,6 +38,30 @@ const ImageUploader:FC<IImageUploader> = ({isOpen, closeModal, changer}) => {
             }, 1500)
         }
         setImageDropped(true);
+    }
+
+    const onClickChooseImage = (e :any) => {
+        let file = e.target.files[0];
+        let fileType =  file.name.split(".").splice(-1,1)[0];
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = () => {
+            if (fileType === 'bmp' || fileType === 'jpeg' || fileType === 'png' || fileType === 'tif' || fileType === 'tiff' || fileType === 'jpg') {
+                image.current = file.name;
+                setImageDropped(true);
+            } else {
+                errorText.current = 'Невірний тип файлу';
+                setError(true);
+                setTimeout(() => {
+                    setError(false);
+                    setImageDropped(false);
+                }, 1500)
+            }
+        }
+    }
+
+    const getImage = () => {
+
     }
 
     useEffect(() => {
@@ -74,13 +102,16 @@ const ImageUploader:FC<IImageUploader> = ({isOpen, closeModal, changer}) => {
                             onDragLeave={e => dragLeaveHandler(e)}
                             onDragOver={e => dragStartHandler(e)}
                             onDrop={e => onDropHandler(e)}
-                        >{imageDropped && isError ? <CloseIcon color='error'/> : imageDropped ? <DoneIcon color='success'/> : 'Drop the file'}</Box>
+                        >
+                            {imageDropped && isError ? <CloseIcon color='error'/> : imageDropped ?
+                            <DoneIcon color='success'/> : 'Оберіть файл'}
+                        </Box>
                         : <Box
                             className='image-drop-area'
                             onDragStart={e => dragStartHandler(e)}
                             onDragLeave={e => dragLeaveHandler(e)}
                             onDragOver={e => dragStartHandler(e)}
-                        >Drag the file</Box>
+                        ><input onChange={onClickChooseImage} type='file'/>{'Оберіть файл'}</Box>
                     }
                 </Box>
                 <Divider/>
