@@ -4,9 +4,11 @@ import {Box, Modal, Typography, TextareaAutosize, Button, Alert, Divider} from "
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import {useAuth} from "../providers/useAuth";
+import {getStorage, ref, uploadBytesResumable} from "firebase/storage";
 
 const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPostCreating, posts}) => {
     const {db, user} = useAuth();
+    const storage = getStorage();
     const [imageDrag, setImageDrag] = useState(false);
     const [imageDropped, setImageDropped] = useState(false);
     const [post, setPost] = useState({img: '', description: ''});
@@ -46,6 +48,8 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
         reader.onload = () => {
             if (fileType === 'bmp' || fileType === 'jpeg' || fileType === 'png' || fileType === 'tif' || fileType === 'tiff' || fileType === 'jpg') {
                 setPost({...post, img: file.name});
+                const storageRef = ref(storage, `${user?.email}/images/${file.name}`);
+                uploadBytesResumable(storageRef, file);
                 setImageDropped(true);
             } else {
                 errorText.current = 'Невірний тип файлу';

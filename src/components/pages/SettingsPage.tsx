@@ -26,22 +26,31 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ImageIcon from '@mui/icons-material/Image';
 import Navbar from "../navbar/Navbar";
 import Menu from "../menu/Menu";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import Loader from "../loader/Loader";
 
 const SettingsPage:FC = () => {
+    const {user, db} = useAuth();
     const [isAvatarChanging, setAvatarChanging] = useState(false);
     const [isBgChanging, setBgChanging] = useState(false);
-    const {user, db} = useAuth();
     const [data, setData] = useState<IUserInfo>();
     const [users, setUsers] = useState<any>([]);
     const [isMenuOpen, setMenuOpen] = useState(false);
     const [newUserInfo, setNewUserInfo] = useState<any>(data);
     const [isSettingsDone, setIsSettingsDone] = useState<boolean>(false);
+    const [avatarUrl, setAvatarUrl] = useState<any>();
+    const storage = getStorage();
 
     const getUserDataFromDoc = async () => {
         const docRef = doc(db, `${user?.email}`, "userData");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setData(docSnap.data().data);
+            const avatarRef = ref(storage, `${user?.email}/images/${docSnap.data().data.avatar}`);
+            getDownloadURL(avatarRef)
+                .then((url) => {
+                    setAvatarUrl(url);
+                });
         } else {
             return console.log("No such document!");
         }
@@ -104,13 +113,18 @@ const SettingsPage:FC = () => {
             <Card sx={{p:2}}>
                 <Grid container direction='column' spacing={2}>
                     <Grid item sx={{display: 'flex', justifyContent: 'center'}}>
-                        <Avatar alt='User' src={data?.avatar} sx={{
-                            position: 'relative',
-                            width: '150px',
-                            height: '150px',
-                            border: '5px solid #eaebed',
-                            mb:2
-                        }}/>
+                        {data
+                            ?
+                            <Avatar alt='User' src={avatarUrl} sx={{
+                                position: 'relative',
+                                width: '150px',
+                                height: '150px',
+                                border: '5px solid #eaebed',
+                                mb:2
+                            }}/>
+                            :
+                            <Loader/>
+                        }
                     </Grid>
                     <Divider/>
                     <Grid item>

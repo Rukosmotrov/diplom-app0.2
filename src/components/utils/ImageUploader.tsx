@@ -2,18 +2,19 @@ import React, {useEffect, useRef, useState, FC} from 'react';
 import {Alert, Box, Button, Modal, Typography, Divider} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
-import {IImageUploader} from "../../interfaces";
+import {IImageUploader, IUserInfo} from "../../interfaces";
 import {getStorage, ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
+import {useAuth} from "../providers/useAuth";
+import {doc, getDoc} from "firebase/firestore";
 
 const ImageUploader:FC<IImageUploader> = ({isOpen, closeModal, changer}) => {
     const storage = getStorage();
-    const storageRef = ref(storage);
-
     const [imageDrag, setImageDrag] = useState(false);
     const [imageDropped, setImageDropped] = useState(false);
     const [isError, setError] = useState(false);
     const errorText = useRef('');
     const image = useRef('');
+    const {user} = useAuth();
 
     function dragStartHandler(e :any) {
         e.preventDefault();
@@ -23,12 +24,26 @@ const ImageUploader:FC<IImageUploader> = ({isOpen, closeModal, changer}) => {
         e.preventDefault();
         setImageDrag(false);
     }
+
+    const uploadImageToStorage = (file: any) => {
+        if (!file) return;
+        const storageRef = ref(storage, `${user?.email}/images/${file.name}`);
+        const upload = uploadBytesResumable(storageRef, file);
+
+        upload.on("state_changed", (snapshot) => {
+            getDownloadURL(upload.snapshot.ref)
+                .then((url) => console.log(url))
+        })
+        setImageDropped(true);
+    }
+
     function onDropHandler(e: any) {
         e.preventDefault();
         let file = e.dataTransfer.files[0];
         let fileType =  file.name.split(".").splice(-1,1)[0];
         if (fileType === 'bmp' || fileType === 'jpeg' || fileType === 'png' || fileType === 'tif' || fileType === 'tiff' || fileType === 'jpg') {
             image.current = file.name;
+            uploadImageToStorage(file);
         } else {
             errorText.current = 'Невірний тип файлу';
             setError(true);
@@ -48,6 +63,7 @@ const ImageUploader:FC<IImageUploader> = ({isOpen, closeModal, changer}) => {
         reader.onload = () => {
             if (fileType === 'bmp' || fileType === 'jpeg' || fileType === 'png' || fileType === 'tif' || fileType === 'tiff' || fileType === 'jpg') {
                 image.current = file.name;
+                uploadImageToStorage(file);
                 setImageDropped(true);
             } else {
                 errorText.current = 'Невірний тип файлу';
@@ -58,10 +74,6 @@ const ImageUploader:FC<IImageUploader> = ({isOpen, closeModal, changer}) => {
                 }, 1500)
             }
         }
-    }
-
-    const getImage = () => {
-
     }
 
     useEffect(() => {

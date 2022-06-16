@@ -7,10 +7,12 @@ import {useAuth} from "../../providers/useAuth";
 import {createUserWithEmailAndPassword, getAuth, sendEmailVerification} from 'firebase/auth';
 import {setDoc, doc, getDoc, updateDoc, addDoc, collection} from 'firebase/firestore';
 import Navbar from "../../navbar/Navbar";
+import {getDownloadURL, getStorage, ref, uploadBytesResumable, getMetadata} from "firebase/storage";
 
 const SignUpPage:FC = () => {
     const navigate = useNavigate();
     const {user, ga, db} = useAuth();
+    const storage = getStorage();
     const [isRegError, setRegError] = useState(false);
     const regError = useRef('');
     const [userData, setUserData] = useState<IUserData>({email:'', password:''} as IUserData);

@@ -19,17 +19,25 @@ import {signOut} from 'firebase/auth';
 import {useImportUserData} from "../hooks/useImportUserData";
 import {doc, getDoc} from "firebase/firestore";
 import MailIcon from "@mui/icons-material/Mail";
+import {getDownloadURL, getStorage, ref} from "firebase/storage";
 
 const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
     const navigate = useNavigate();
     const {user, ga, db} = useAuth();
     const [data, setData] = useState<IUserInfo>();
+    const [avatarUrl, setAvatarUrl] = useState<any>();
+    const storage = getStorage();
 
     const getUserDataFromDoc = async () => {
         const docRef = doc(db, `${user?.email}`, "userData");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setData(docSnap.data().data);
+            const avatarRef = ref(storage, `${user?.email}/images/${docSnap.data().data.avatar}`);
+            getDownloadURL(avatarRef)
+                .then((url) => {
+                    setAvatarUrl(url);
+                });
         } else {
             return console.log("No such document!");
         }
@@ -49,7 +57,7 @@ const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
                 <ListItem>
                     <Card sx={{maxWidth: '300px'}}>
                         <CardHeader
-                            avatar={<Avatar alt='User' src={`/${data?.avatar}`}/>}
+                            avatar={<Avatar alt='User' src={avatarUrl}/>}
                             title={`${data?.firstName} ${data?.lastName}`}
                             subheader={'online'}
                         />

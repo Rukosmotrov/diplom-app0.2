@@ -17,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import {IPost, IUserInfo} from "../../interfaces";
 import {useAuth} from "../providers/useAuth";
 import {doc, getDoc} from "firebase/firestore";
+import {getDownloadURL, getStorage, ref} from "firebase/storage";
 
 const Post:FC<IPost> = ({
                             img,
@@ -29,12 +30,25 @@ const Post:FC<IPost> = ({
 }) => {
     const {user, db} = useAuth();
     const [data, setData] = useState<IUserInfo>();
+    const [avatarUrl, setAvatarUrl] = useState<any>();
+    const [imgUrl, setImgUrl] = useState<any>();
+    const storage = getStorage();
 
     const getUserDataFromDoc = async () => {
         const docRef = doc(db, `${user?.email}`, "userData");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setData(docSnap.data().data);
+            const avatarRef = ref(storage, `${user?.email}/images/${docSnap.data().data.avatar}`);
+            getDownloadURL(avatarRef)
+                .then((url) => {
+                    setAvatarUrl(url);
+                });
+            const imageRef = ref(storage, `${user?.email}/images/${img}`);
+            getDownloadURL(imageRef)
+                .then((url) => {
+                    setImgUrl(url);
+                });
         } else {
             return console.log("No such document!");
         }
@@ -48,7 +62,7 @@ const Post:FC<IPost> = ({
         <Grid item>
             <Card>
                     <CardHeader
-                        avatar={<Link href='/profile'><Avatar src={data?.avatar}/></Link>}
+                        avatar={<Link href='/profile'><Avatar src={avatarUrl}/></Link>}
                         title={<Link href='/profile' underline='none'>{`${data?.firstName} ${data?.lastName}`}</Link>}
                         subheader={time}
                         action={
@@ -63,7 +77,7 @@ const Post:FC<IPost> = ({
                         <CardMedia
                             component="img"
                             height="300"
-                            image={img}
+                            image={imgUrl}
                             alt={alt}
                         />
                         <Typography sx={{p:2}}>{description}</Typography>
