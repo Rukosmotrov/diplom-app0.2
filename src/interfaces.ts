@@ -32,6 +32,7 @@ export interface IPost {
     remove?(id: number | undefined): void;
     time?: string;
     author?: IUser | null;
+    user?: any;
 }
 
 export interface IMenu {

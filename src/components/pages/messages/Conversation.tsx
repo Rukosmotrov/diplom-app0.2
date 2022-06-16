@@ -6,6 +6,7 @@ import {useAuth} from "../../providers/useAuth";
 import {Box, Typography, Grid, Button, TextField, Avatar} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import SearchIcon from "@mui/icons-material/Search";
+import {getDownloadURL, getStorage, ref} from "firebase/storage";
 
 const Conversation:FC = () => {
     const {db, user} = useAuth();
@@ -13,6 +14,8 @@ const Conversation:FC = () => {
     const [messages, setMessages] = useState<any>([]);
     const [value, setValue] = useState('');
     const date = new Date();
+    const [sighedUserAvatarUrl, setSighedUserAvatarUrl] = useState<any>();
+    const storage = getStorage();
 
     const getMessagesFromDoc = async () => {
         const docRef = doc(db, `${user?.email}`, "messages");
@@ -29,6 +32,11 @@ const Conversation:FC = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setData(docSnap.data().data);
+            const sighedUserAvatarRef = ref(storage, `${user?.email}/images/${docSnap.data().data.avatar}`);
+            getDownloadURL(sighedUserAvatarRef)
+                .then((url) => {
+                    setSighedUserAvatarUrl(url);
+                });
         } else {
             return console.log("No such document!");
         }
@@ -68,7 +76,7 @@ const Conversation:FC = () => {
                     {messages.map((message: any) =>
                         <Box className={classes.message}>
                             <Grid container direction='row'>
-                                <Avatar src={data?.avatar} alt='User'/>
+                                <Avatar src={sighedUserAvatarUrl} alt='User'/>
                                 <Box sx={{ml:'10px'}}>{message.text}</Box>
                             </Grid>
                         </Box>

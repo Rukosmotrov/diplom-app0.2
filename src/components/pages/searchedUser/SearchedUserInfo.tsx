@@ -14,6 +14,7 @@ import {useAuth} from "../../providers/useAuth";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {useAuthState} from "react-firebase-hooks/auth";
 import Loader from "../../loader/Loader";
+import {getDownloadURL, getStorage, ref} from "firebase/storage";
 
 const SearchedUserInfo:FC = () => {
     const {user, db, ga} = useAuth();
@@ -22,6 +23,9 @@ const SearchedUserInfo:FC = () => {
     const [signedUserData, setSignedUserData] = useState<any>();
     const [usr, loading, error] = useAuthState(ga);
     const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+    const [searchedUserAvatarUrl, setSearchedUserAvatarUrl] = useState<any>();
+    const [searchedUserBgImgUrl, setSearchedUserBgImgUrl] = useState<any>();
+    const storage = getStorage();
 
     const getCurrentUserFromDoc = async () => {
         const docRef = doc(db, "usersList", "currentUser");
@@ -38,6 +42,16 @@ const SearchedUserInfo:FC = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setData(docSnap.data().data);
+            const searchedUserAvatarRef = ref(storage, `${currentUser?.currentUser.email}/images/${docSnap.data().data.avatar}`);
+            getDownloadURL(searchedUserAvatarRef)
+                .then((url) => {
+                    setSearchedUserAvatarUrl(url);
+                });
+            const searchedUserBgImgRef = ref(storage, `${currentUser?.currentUser.email}/images/${docSnap.data().data.bgImg}`);
+            getDownloadURL(searchedUserBgImgRef)
+                .then((url) => {
+                    setSearchedUserAvatarUrl(url);
+                });
         } else {
             return console.log("No such document!");
         }
@@ -72,8 +86,8 @@ const SearchedUserInfo:FC = () => {
     }
 
     useEffect(() => {
-        getCurrentUserFromDoc();
-        getUserSignedDataFromDoc();
+        getCurrentUserFromDoc()
+            .then(getUserSignedDataFromDoc);
         checkIsSubscribed();
     }, []);
 
@@ -88,8 +102,8 @@ const SearchedUserInfo:FC = () => {
     return (
         <Grid container spacing={5} direction='row'>
             <Grid item xs={12}>
-                <div className='user-header' style={{backgroundImage: `url(/${data?.bgImg})`}}>
-                    <Avatar alt='User' src={`/${data?.avatar}`} sx={{
+                <div className='user-header' style={{backgroundImage: `url(${searchedUserBgImgUrl ? searchedUserBgImgUrl : '/'+data?.bgImg})`}}>
+                    <Avatar alt='User' src={searchedUserAvatarUrl} sx={{
                         position: 'relative',
                         width: '150px',
                         height: '150px',

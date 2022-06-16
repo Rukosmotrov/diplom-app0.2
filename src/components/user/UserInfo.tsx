@@ -68,7 +68,7 @@ const UserInfo:FC = () => {
     return (
         <Grid container spacing={5} direction='row'>
             <Grid item xs={12}>
-                <div className='user-header' style={{backgroundImage: `url(${bgImgUrl ? bgImgUrl : data?.bgImg})`}}>
+                <div className='user-header' style={{backgroundImage: `url(${bgImgUrl ? bgImgUrl : '/'+data?.bgImg})`}}>
                     <Avatar alt='User' src={avatarUrl} sx={{
                         position: 'relative',
                         width: '150px',

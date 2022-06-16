@@ -1,13 +1,34 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
-import {IPost, IPostListProps} from "../../../../interfaces";
+import {IPost, IPostListProps, IUserInfo} from "../../../../interfaces";
 import {Grid, Typography} from "@mui/material";
 import SearchedUserPost from "./SearchedUserPost";
+import {useAuth} from "../../../providers/useAuth";
+import {getDownloadURL, getStorage, ref} from "firebase/storage";
+import {doc, getDoc} from "firebase/firestore";
 
 interface ISearchedPostListProps {
-    posts: any;
+    posts: IPost[];
 }
 
+
+
 const SearchedUserPostList:FC<ISearchedPostListProps> = ({posts}) => {
+    const {db} = useAuth();
+    const [currentUser, setCurrentUser] = useState<any>();
+
+    const getCurrentUserFromDoc = async () => {
+        const docRef = doc(db, "usersList", "currentUser");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            setCurrentUser(docSnap.data());
+        } else {
+            return console.log("No such document!");
+        }
+    }
+
+    useEffect(() => {
+        getCurrentUserFromDoc();
+    }, []);
 
     return (
         <>
@@ -24,6 +45,7 @@ const SearchedUserPostList:FC<ISearchedPostListProps> = ({posts}) => {
                                 description={post.description}
                                 time={post.time}
                                 author={post.author}
+                                user={currentUser}
                             />
                         })
                     }

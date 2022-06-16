@@ -17,6 +17,7 @@ import {INavbar, IUserInfo} from "../../interfaces";
 import {useAuth} from "../providers/useAuth";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {getDownloadURL, getStorage, ref} from "firebase/storage";
+import SearchedUserCard from "./SearchedUserCard";
 
 const Navbar:FC<INavbar> = ({openMenu}) => {
     const [searchActive, setSearchActive] = useState<boolean>(false);
@@ -26,7 +27,6 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
     const [usersList, setUsersList] = useState<any>(users);
     const [searchTerm, setSearchTerm] = useState<any>();
     const navigate = useNavigate();
-    const [currentUser, setCurrentUser] = useState<any>({});
     const [avatarUrl, setAvatarUrl] = useState<any>();
     const storage = getStorage();
 
@@ -53,13 +53,6 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
         } else {
             return console.log("No such document!");
         }
-    }
-
-    const updateCurrentUser = async () => {
-        const docRef = doc(db, "usersList", "currentUser");
-        await updateDoc(docRef, {
-            currentUser: currentUser
-        });
     }
 
     useEffect(() => {
@@ -124,23 +117,13 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
                         <Box className={classes.searchField}>
                             {usersList.map((item: any) => {
                                 return (
-                                    <Button onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        if (item.dateOfReg === data?.dateOfReg) {
-                                            navigate('/home');
-                                            setSearchActive(false);
-                                        } else {
-                                            setCurrentUser(item);
-                                            if (currentUser === item) {
-                                                updateCurrentUser();
-                                                navigate(`/user/${item.dateOfReg}`);
-                                            }
-                                        }
-                                    }}>
-                                        <Card className={classes.searchedUser} id={item.dateOfReg}>
-                                            <Avatar src={`/${item.avatar}`}/>{item.name}
-                                        </Card>
-                                    </Button>
+                                    <SearchedUserCard
+                                        email={item.email}
+                                        dateOfReg={item.dateOfReg}
+                                        data={data}
+                                        name={item.name}
+                                        item={item}
+                                    />
                                 )
                             })}
                         </Box>
