@@ -28,13 +28,13 @@ const SearchedUser:FC = () => {
             <Navbar openMenu={() => setMenuOpen(true)}/>
             <SearchedUserInfo/>
             <Grid container spacing={5} direction='row'>
-                <Grid item xs={5}>
+                <Grid item md={5} xs={12}>
                     <Box className='leftSide'>
                         <SearchedUserShortInfo/>
                         <ShowAllSearchedUserFriends/>
                     </Box>
                 </Grid>
-                <Grid item xs={7}>
+                <Grid item md={7} xs={12}>
                     <SearchedUserPosts/>
                 </Grid>
             </Grid>

@@ -30,13 +30,13 @@ const Profile:FC = () => {
                 <Navbar openMenu={() => setMenuOpen(true)}/>
                 <UserInfo/>
                 <Grid container spacing={5} direction='row'>
-                    <Grid item xs={5}>
+                    <Grid item md={5} xs={12}>
                         <Box className='leftSide'>
                             <ShortUserInfo/>
                             <ShowAllFriends/>
                         </Box>
                     </Grid>
-                    <Grid item xs={7}>
+                    <Grid item md={7} xs={12}>
                         <Posts/>
                     </Grid>
                 </Grid>

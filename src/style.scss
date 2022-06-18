@@ -94,3 +94,9 @@ $thirdColor: #5689c0;
     cursor: pointer;
   }
 }
+
+@media screen and (max-width: 992px) {
+  .leftSide {
+    width: 100%;
+  }
+}

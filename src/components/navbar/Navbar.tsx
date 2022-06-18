@@ -98,8 +98,8 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
                         <IconButton
                             size="medium"
                             color="inherit"
-                            sx={{ mr: 2 }}
-                            onClick={() => console.log('USers: ', users)}
+                            onClick={() => navigate('/home')}
+                            className={classes.logo}
                         >
                             {'yikes!'}
                         </IconButton>

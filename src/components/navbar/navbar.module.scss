@@ -50,3 +50,14 @@
   padding: 10px;
   margin: 10px;
 }
+
+.logo {
+  margin-right: 2em;
+  display: block;
+}
+
+@media screen and (max-width: 992px) {
+  .logo {
+    display: none;
+  }
+}
