@@ -17,11 +17,6 @@ export const MenuData = [
         pageName: 'News'
     },
     {
-        path: '/friends',
-        icon: GroupIcon,
-        pageName: 'Friends'
-    },
-    {
         path: '/messages',
         icon: MailIcon,
         pageName: 'Messages'

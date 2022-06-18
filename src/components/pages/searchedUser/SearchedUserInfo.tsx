@@ -25,75 +25,129 @@ const SearchedUserInfo:FC = () => {
     const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
     const [searchedUserAvatarUrl, setSearchedUserAvatarUrl] = useState<any>();
     const [searchedUserBgImgUrl, setSearchedUserBgImgUrl] = useState<any>();
+    const [signedSubs, setSignedSubs] = useState<any>([]);
+    const [currentSubs, setCurrentSubs] = useState<any>([]);
+    const [canUpload, setCanUpload] = useState<boolean>(false);
     const storage = getStorage();
 
     const getCurrentUserFromDoc = async () => {
         const docRef = doc(db, "usersList", "currentUser");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            setCurrentUser(docSnap.data());
+            setCurrentUser(docSnap.data().currentUser);
         } else {
             return console.log("No such document!");
         }
     }
 
     const getUserDataFromDoc = async () => {
-        const docRef = doc(db, `${currentUser?.currentUser.email}`, "userData");
+        const docRef = doc(db, `${currentUser?.email}`, "userData");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setData(docSnap.data().data);
-            const searchedUserAvatarRef = ref(storage, `${currentUser?.currentUser.email}/images/${docSnap.data().data.avatar}`);
+            setCurrentSubs(docSnap.data().data.subscribers)
+            const searchedUserAvatarRef = ref(storage, `${currentUser?.email}/images/${docSnap.data().data.avatar}`);
             getDownloadURL(searchedUserAvatarRef)
                 .then((url) => {
                     setSearchedUserAvatarUrl(url);
                 });
-            const searchedUserBgImgRef = ref(storage, `${currentUser?.currentUser.email}/images/${docSnap.data().data.bgImg}`);
+            const searchedUserBgImgRef = ref(storage, `${currentUser?.email}/images/${docSnap.data().data.bgImg}`);
             getDownloadURL(searchedUserBgImgRef)
                 .then((url) => {
-                    setSearchedUserAvatarUrl(url);
+                    setSearchedUserBgImgUrl(url);
                 });
         } else {
             return console.log("No such document!");
         }
     }
 
-    const getUserSignedDataFromDoc = async () => {
+    const getSignedUserDataFromDoc = async () => {
+        const currentDocRef = doc(db, "usersList", "currentUser");
+        const currentDocSnap = await getDoc(currentDocRef);
         const docRef = doc(db, `${user?.email}`, "userData");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setSignedUserData(docSnap.data().data);
+            setSignedSubs(docSnap.data().data.subscribes)
+            docSnap.data().data.subscribes.map((item: any) => {
+                if (item.email === currentDocSnap.data()?.currentUser.email){
+                    setIsSubscribed(true);
+                }
+            })
         } else {
             return console.log("No such document!");
         }
     }
 
-    const checkIsSubscribed = () => {
-        if (signedUserData?.subscribes.includes(currentUser)) {
-            setIsSubscribed(true)
+    const subscribe = async () => {
+        const docRef = doc(db, "usersList", "currentUser");
+        const docSnap = await getDoc(docRef);
+        const currentDocRef = doc(db, `${docSnap.data()?.currentUser.email}`, "userData");
+        const signedDocRef = doc(db, `${user?.email}`, "userData");
+        await updateDoc(signedDocRef, {
+            data: {...signedUserData, subscribes: [...signedUserData.subscribes, currentUser]}
+        });
+        await updateDoc(currentDocRef, {
+            data: {...data, subscribers: [...data?.subscribers, signedUserData]}
+        });
+        setIsSubscribed(true);
+    }
+
+    const unSubscribe = async () => {
+        const docRef = doc(db, "usersList", "currentUser");
+        const docSnap = await getDoc(docRef);
+        const currentDocRef = doc(db, `${docSnap.data()?.currentUser.email}`, "userData");
+        const currentDocSnap = await getDoc(currentDocRef);
+        const signedDocRef = doc(db, `${user?.email}`, "userData");
+        const signedDocSnap = await getDoc(signedDocRef);
+        if (docSnap.exists()) {
+            setCurrentSubs( (prev: any) => prev.filter((item: any) => item.email !== signedDocSnap.data()?.data.email));
+            setSignedSubs((prev: any) => prev.filter((item: any) => item.email !== currentDocSnap.data()?.data.email));
+            setCanUpload(true);
+            // console.log('Unsub current: ', currentSubs);
+            // console.log('Unsub signed: ', signedSubs);
+            setIsSubscribed(false);
+        } else {
+            return console.log("No such document!");
         }
     }
 
-    const subscription = async () => {
-        // const signedUserDocRef = doc(db, `${signedUserData?.email}`, "userData");
-        // await updateDoc(signedUserDocRef, {
-        //     data: {...data, subscribes: [...signedUserData.subscribes, currentUser.currentUser]}
-        // });
-        // const currentUserDocRef = doc(db, `${currentUser?.email}`, "userData");
-        // await updateDoc(currentUserDocRef, {
-        //     data: {...data, subscribers: [...currentUser?.subscribers, signedUserData]}
-        // });
-        console.log('Signed user: ', user);
+    const updateDocs = async () => {
+        const docRef = doc(db, "usersList", "currentUser");
+        const docSnap = await getDoc(docRef);
+        const currentDocRef = doc(db, `${docSnap.data()?.currentUser.email}`, "userData");
+        const currentDocSnap = await getDoc(currentDocRef);
+        const signedDocRef = doc(db, `${user?.email}`, "userData");
+        const signedDocSnap = await getDoc(signedDocRef);
+        updateDoc(signedDocRef, {
+            data: {
+                ...signedDocSnap.data()?.data,
+                subscribes: signedSubs
+            }
+        });
+        updateDoc(currentDocRef, {
+            data: {
+                ...currentDocSnap.data()?.data,
+                subscribers: currentSubs
+            }
+        });
     }
 
     useEffect(() => {
         getCurrentUserFromDoc()
-            .then(getUserSignedDataFromDoc);
-        checkIsSubscribed();
+            .then(getSignedUserDataFromDoc);
+        console.log('Is sub: ', isSubscribed);
     }, []);
 
     useEffect(() => {
         getUserDataFromDoc();
     }, [currentUser]);
+
+    useEffect(() => {
+        if (canUpload) {
+            updateDocs();
+        }
+    }, [isSubscribed]);
 
     if (loading) {
         return <Loader/>
@@ -113,11 +167,12 @@ const SearchedUserInfo:FC = () => {
                 <Card className='user-header-bottom'>
                     <Typography variant={'h5'}>{`${data?.firstName} ${data?.lastName}`}</Typography>
                     <Box sx={{display: 'flex', flexDirection: 'row'}}>
-                        <Typography sx={{width:'150px'}}>{`Followers: 0`}</Typography>
-                        <Typography sx={{width:'150px'}}>{`Subscriptions: 0`}</Typography>
+                        <Typography sx={{width:'150px'}}>{`Followers: ${data?.subscribers.length}`}</Typography>
+                        <Typography sx={{width:'150px'}}>{`Subscriptions: ${data?.subscribes.length}`}</Typography>
                     </Box>
                     <CardActions>
-                        <Button variant='contained' onClick={subscription}
+                        <Button variant={isSubscribed ? 'outlined' : 'contained'}
+                                onClick={isSubscribed ? unSubscribe : subscribe}
                                 sx={{width:'150px', m:'0 20px'}}>{isSubscribed ? 'Following' : 'Follow'}</Button>
                         <Button variant='contained' sx={{width:'150px', m:'0 20px'}}>Message</Button>
                     </CardActions>

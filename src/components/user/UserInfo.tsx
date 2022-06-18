@@ -19,6 +19,7 @@ import {doc, getDoc} from "firebase/firestore";
 import {useAuthState} from "react-firebase-hooks/auth";
 import Loader from "../loader/Loader";
 import {getDownloadURL, getStorage, ref} from "firebase/storage";
+import {Link, useNavigate} from "react-router-dom";
 
 const UserInfo:FC = () => {
     const {user, db, ga} = useAuth();
@@ -27,6 +28,7 @@ const UserInfo:FC = () => {
     const [avatarUrl, setAvatarUrl] = useState<any>();
     const [bgImgUrl, setBgImgUrl] = useState<any>();
     const storage = getStorage();
+    const navigate = useNavigate();
 
     const getUserDataFromDoc = async () => {
         const docRef = doc(db, `${user?.email}`, "userData");
@@ -48,17 +50,9 @@ const UserInfo:FC = () => {
         }
     }
 
-    // const getAvatar = async () => {
-    //     await getDownloadURL(starsRef)
-    //         .then((url) => {
-    //             setUrl(url);
-    //             return console.log('Url', url);
-    //         });
-    // }
 
     useEffect(() => {
         getUserDataFromDoc()
-        //getAvatar();
     }, []);
 
     if (loading) {
@@ -79,8 +73,16 @@ const UserInfo:FC = () => {
                 <Card className='user-header-bottom'>
                     <Typography variant={'h5'}>{`${data?.firstName} ${data?.lastName}`}</Typography>
                     <Box sx={{display: 'flex', flexDirection: 'row'}}>
-                        <Typography variant={'h6'} sx={{width:'150px', m:'0 20px'}}>Followers: 0</Typography>
-                        <Typography variant={'h6'} sx={{width:'150px', m:'0 20px'}}>Subscribes: 0</Typography>
+                        <Typography variant={'h6'} sx={{width:'150px', m:'0 20px'}}>
+                            <Button onClick={() => navigate('/subscribers')}>
+                                {`Підписники: ${data?.subscribers.length}`}
+                            </Button>
+                        </Typography>
+                        <Typography variant={'h6'} sx={{width:'150px', m:'0 20px'}}>
+                            <Button variant='text' onClick={() => navigate('/subscribes')}>
+                                {`Підписки: ${data?.subscribes.length}`}
+                            </Button>
+                        </Typography>
                     </Box>
                 </Card>
             </Grid>

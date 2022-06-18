@@ -9,9 +9,7 @@ import {
     Card, Button
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import MailIcon from '@mui/icons-material/Mail';
 import SearchIcon from '@mui/icons-material/Search';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import classes from './navbar.module.scss';
 import {INavbar, IUserInfo} from "../../interfaces";
 import {useAuth} from "../providers/useAuth";
@@ -26,6 +24,7 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
     const [users, setUsers] = useState<any>([]);
     const [usersList, setUsersList] = useState<any>(users);
     const [searchTerm, setSearchTerm] = useState<any>();
+    const [searchedUserAvatarUrl, setSearchedUserAvatarUrl] = useState<any>();
     const navigate = useNavigate();
     const [avatarUrl, setAvatarUrl] = useState<any>();
     const storage = getStorage();
@@ -56,9 +55,11 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
     }
 
     useEffect(() => {
-        getUserDataFromDoc();
-        getUsersFromDoc();
+        getUserDataFromDoc()
+            .then(getUsersFromDoc)
     }, []);
+
+
 
     const filterUsers = (searchText: any, listOfUsers: any) => {
         if (searchText == '') {
@@ -109,7 +110,11 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
                             type="text"
                             placeholder='Search'
                             value={searchTerm}
-                            onFocus={() => setSearchActive(true)}
+                            onFocus={(e) => {
+                                setSearchActive(true)
+                                setSearchTerm(e.target.value)
+                            }
+                            }
                             onBlur={() => setSearchActive(false)}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -123,6 +128,7 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
                                         data={data}
                                         name={item.name}
                                         item={item}
+                                        avatar={item.avatar}
                                     />
                                 )
                             })}

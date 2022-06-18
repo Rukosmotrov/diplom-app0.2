@@ -10,43 +10,24 @@ interface ISearchedUserCard {
     email: string;
     dateOfReg: string;
     name: string;
+    avatar: string;
     data: any;
     item: any;
 }
 
-const SearchedUserCard:FC<ISearchedUserCard> = ({email, name, data, dateOfReg, item}) => {
+const SearchedUserCard:FC<ISearchedUserCard> = ({email, name, data, dateOfReg, item, avatar}) => {
     const {db} = useAuth();
     const storage = getStorage();
     const [currentUser, setCurrentUser] = useState<any>({});
     const [searchedUserAvatarUrl, setSearchedUserAvatarUrl] = useState<any>();
     const navigate = useNavigate();
 
-    // const getAvatar = async () => {
-    //     const docRef = doc(db, `${email}`, "userData");
-    //     const docSnap = await getDoc(docRef);
-    //     if (docSnap.exists()) {
-    //         const avatarRef = ref(storage, `${email}/images/${docSnap.data().data.avatar}`);
-    //         getDownloadURL(avatarRef)
-    //             .then((url) => {
-    //                 setSearchedUserAvatarUrl(url);
-    //             });
-    //     } else {
-    //         return console.log("No such document!");
-    //     }
-    // };
-
-    const getAvatar = async () => {
-        const docRef = doc(db, `${email}`, "userData");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            const avatarRef = ref(storage, `${email}/images/${docSnap.data().data.avatar}`);
-            getDownloadURL(avatarRef)
-                .then((url) => {
-                    setSearchedUserAvatarUrl(url);
-                });
-        } else {
-            return console.log("No such document!");
-        }
+    const getAvatar = () => {
+        const avatarRef = ref(storage, `${email}/images/${avatar}`);
+        getDownloadURL(avatarRef)
+            .then((url) => {
+                setSearchedUserAvatarUrl(url);
+            });
     }
 
     useEffect(() => {

@@ -2,11 +2,12 @@ import NewsPage from "../pages/news/NewsPage";
 import MessagesPage from "../pages/messages/MessagesPage";
 import SettingsPage from "../pages/SettingsPage";
 import PageNotFound from "../pages/PageNotFound";
-import FriendsPage from "../pages/FriendsPage";
+import Subscribes from "../pages/subscribes/Subscribes";
 import Profile from "../pages/profile/Profile";
 import SignUpPage from "../pages/auth/SignUpPage";
 import SignInPage from "../pages/auth/SignInPage";
 import SearchedUser from "../pages/searchedUser/SearchedUser";
+import Subscribers from "../pages/subscribers/Subscribers";
 
 export const privateRoutes = [
     {
@@ -25,13 +26,18 @@ export const privateRoutes = [
         auth: true
     },
     {
-        path: '/friends',
-        element: FriendsPage,
+        path: '/subscribes',
+        element: Subscribes,
+        auth: true
+    },
+    {
+        path: '/subscribers',
+        element: Subscribers,
         auth: true
     },
     {
         path: '/friends/:id',
-        element: FriendsPage,
+        element: Subscribes,
         auth: true
     },
     {
