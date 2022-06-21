@@ -6,7 +6,6 @@ import {IUserInfo} from "../../../interfaces";
 import {useAuth} from "../../providers/useAuth";
 import {doc, getDoc} from "firebase/firestore";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import {UserContext} from "../../context/context";
 
 const SearchedUserShortInfo:FC = () => {
     const {user, db} = useAuth();

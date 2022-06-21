@@ -32,9 +32,11 @@ const ImageUploader:FC<IImageUploader> = ({isOpen, closeModal, changer}) => {
 
         upload.on("state_changed", (snapshot) => {
             getDownloadURL(upload.snapshot.ref)
-                .then((url) => console.log(url))
-        })
-        setImageDropped(true);
+                .then((url) => {
+                    console.log(url);
+                    setImageDropped(true);
+                })
+        });
     }
 
     function onDropHandler(e: any) {

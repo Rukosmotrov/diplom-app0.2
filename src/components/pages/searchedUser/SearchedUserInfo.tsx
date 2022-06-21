@@ -15,6 +15,7 @@ import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {useAuthState} from "react-firebase-hooks/auth";
 import Loader from "../../loader/Loader";
 import {getDownloadURL, getStorage, ref} from "firebase/storage";
+import {useNavigate} from "react-router-dom";
 
 const SearchedUserInfo:FC = () => {
     const {user, db, ga} = useAuth();
@@ -29,6 +30,7 @@ const SearchedUserInfo:FC = () => {
     const [currentSubs, setCurrentSubs] = useState<any>([]);
     const [canUpload, setCanUpload] = useState<boolean>(false);
     const storage = getStorage();
+    const navigate = useNavigate();
 
     const getCurrentUserFromDoc = async () => {
         const docRef = doc(db, "usersList", "currentUser");
@@ -166,9 +168,19 @@ const SearchedUserInfo:FC = () => {
                 </div>
                 <Card className='user-header-bottom'>
                     <Typography variant={'h5'}>{`${data?.firstName} ${data?.lastName}`}</Typography>
-                    <Box sx={{display: 'flex', flexDirection: 'row'}}>
-                        <Typography sx={{width:'150px'}}>{`Followers: ${data?.subscribers.length}`}</Typography>
-                        <Typography sx={{width:'150px'}}>{`Subscriptions: ${data?.subscribes.length}`}</Typography>
+                    <Box sx={{display: 'flex', flexDirection: 'row'}} >
+                        <Button
+                            sx={{width:'150px'}}
+                            onClick={() => navigate(`/subscribers${data?.dateOfReg}`)}
+                        >
+                            {`Підписники: ${data?.subscribers.length}`}
+                        </Button>
+                        <Button
+                            sx={{width:'150px'}}
+                            onClick={() => navigate(`/subscribes${data?.dateOfReg}`)}
+                        >
+                            {`Підписки: ${data?.subscribes.length}`}
+                        </Button>
                     </Box>
                     <CardActions>
                         <Button variant={isSubscribed ? 'outlined' : 'contained'}

@@ -17,7 +17,6 @@ import Menu from "../../menu/Menu";
 import SearchedUserInfo from "./SearchedUserInfo";
 import SearchedUserShortInfo from "./SearchedUserShortInfo";
 import ShowAllSearchedUserFriends from "./ShowAllSearchedUserFriends";
-import {UserContext} from "../../context/context";
 import SearchedUserPosts from "./searchedUserPostsSpace/SearchedUserPosts";
 
 const SearchedUser:FC = () => {

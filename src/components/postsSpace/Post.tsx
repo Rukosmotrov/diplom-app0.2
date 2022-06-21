@@ -7,7 +7,7 @@ import {
     CardMedia,
     Divider,
     Grid,
-    IconButton, Link,
+    IconButton, Link, Tooltip,
     Typography
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -16,7 +16,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import CloseIcon from '@mui/icons-material/Close';
 import {IPost, IUserInfo} from "../../interfaces";
 import {useAuth} from "../providers/useAuth";
-import {doc, getDoc} from "firebase/firestore";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
 import {getDownloadURL, getStorage, ref} from "firebase/storage";
 
 const Post:FC<IPost> = ({
@@ -26,12 +26,17 @@ const Post:FC<IPost> = ({
                             remove,
                             id,
                             time,
-                            author
+                            author,
+                            likes
 }) => {
     const {user, db} = useAuth();
     const [data, setData] = useState<IUserInfo>();
     const [avatarUrl, setAvatarUrl] = useState<any>();
     const [imgUrl, setImgUrl] = useState<any>();
+    const [currentPost, setCurrentPost] = useState<any>();
+    const [like, setLike] = useState<boolean>(false);
+    const [canUpload, setCanUpload] = useState<boolean>(false);
+    const [posts, setPosts] = useState<any>([]);
     const storage = getStorage();
 
     const getUserDataFromDoc = async () => {
@@ -54,9 +59,74 @@ const Post:FC<IPost> = ({
         }
     }
 
+    const getCurrentPostFromDoc = async () => {
+        const docRef = doc(db, `${user?.email}`, "posts");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            docSnap.data().posts.map((post: any) => {
+                if (post.id === id) {
+                    setCurrentPost(post);
+                    if (post.likes.includes(user?.email)){
+                        setLike(true);
+                    }
+                }
+            })
+        } else {
+            return console.log("No such document!");
+        }
+    }
+
+    const likePost = async () => {
+        const docRef = doc(db, `${user?.email}`, "posts");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            await docSnap.data().posts.map(async (post: any) => {
+                if (post.id === id) {
+                    setPosts([...docSnap.data().posts.filter((item: any) => item.id !== post.id),
+                        {...post, likes: [...post.likes, user?.email]}]);
+                    setCanUpload(true);
+                    setLike(true);
+                }
+            })
+        } else {
+            return console.log("No such document!");
+        }
+    }
+
+    const unLikePost = async () => {
+        const docRef = doc(db, `${user?.email}`, "posts");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            await docSnap.data().posts.map(async (post: any) => {
+                if (post.id === id) {
+                    setPosts([...docSnap.data().posts.filter((item: any) => item.id !== post.id),
+                        {...post, likes: post.likes.filter((item: any) => item !== user?.email)}]);
+                    setCanUpload(true);
+                    setLike(false);
+                }
+            })
+        } else {
+            return console.log("No such document!");
+        }
+    }
+
+    const updateLikes = async () => {
+        const docRef = doc(db, `${user?.email}`, "posts");
+        await updateDoc(docRef, {
+            posts: posts
+        });
+    }
+
     useEffect(() => {
-        getUserDataFromDoc();
+        getUserDataFromDoc()
+            .then(getCurrentPostFromDoc);
     }, []);
+
+    useEffect(() => {
+        if (canUpload) {
+            updateLikes();
+        }
+    }, [posts]);
 
     return (
         <Grid item>
@@ -66,9 +136,11 @@ const Post:FC<IPost> = ({
                         title={<Link href='/profile' underline='none'>{`${data?.firstName} ${data?.lastName}`}</Link>}
                         subheader={time}
                         action={
-                            <IconButton aria-label="settings" onClick={() => remove ? remove(id) : remove}>
-                                <CloseIcon/>
-                            </IconButton>
+                            <Tooltip title={'Видалити'}>
+                                <IconButton aria-label="settings" onClick={() => remove ? remove(id) : remove}>
+                                    <CloseIcon/>
+                                </IconButton>
+                            </Tooltip>
                         }
                     />
                 {img !== ''
@@ -87,15 +159,10 @@ const Post:FC<IPost> = ({
                 }
                 <Divider/>
                 <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites">
-                        <FavoriteIcon />
+                    <IconButton onClick={like ? unLikePost : likePost} aria-label="add to favorites">
+                        <FavoriteIcon color={like ? "primary" : "inherit"} />
                     </IconButton>
-                    <IconButton aria-label="add to favorites">
-                        <CommentIcon />
-                    </IconButton>
-                    <IconButton aria-label="share">
-                        <ShareIcon />
-                    </IconButton>
+                    <Typography>{likes.length}</Typography>
                 </CardActions>
             </Card>
         </Grid>

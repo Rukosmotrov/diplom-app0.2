@@ -5,7 +5,6 @@ import AddIcon from '@mui/icons-material/Add';
 import {IPost, IUserInfo} from "../../../../interfaces";
 import {doc, getDoc, updateDoc} from 'firebase/firestore';
 import {useAuth} from "../../../providers/useAuth";
-import {UserContext} from "../../../context/context";
 
 const SearchedUserPosts:FC = () => {
     const [posts, setPosts] = useState<IPost[]>([]);

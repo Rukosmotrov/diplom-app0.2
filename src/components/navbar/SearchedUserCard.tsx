@@ -54,7 +54,7 @@ const SearchedUserCard:FC<ISearchedUserCard> = ({email, name, data, dateOfReg, i
                 setCurrentUser(item);
                 if (currentUser === item) {
                     updateCurrentUser();
-                    navigate(`/user/${dateOfReg}`);
+                    navigate(`/user${dateOfReg}`);
                 }
             }
         }}>

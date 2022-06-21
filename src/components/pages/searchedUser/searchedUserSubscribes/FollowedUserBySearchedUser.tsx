@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Avatar, Card, Grid, Typography} from "@mui/material";
 import {getDownloadURL, getStorage, ref} from "firebase/storage";
-import {useAuth} from "../../providers/useAuth";
+import {useAuth} from "../../../providers/useAuth";
 import {useNavigate} from "react-router-dom";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
 
@@ -13,7 +13,7 @@ interface IFollowedUser {
     email: string;
 }
 
-const FollowedUser:FC<IFollowedUser> = ({dateOfReg, avatar, firstName, lastName, email}) => {
+const FollowedUserBySearchedUser:FC<IFollowedUser> = ({dateOfReg, avatar, firstName, lastName, email}) => {
     const {db} = useAuth();
     const [avatarUrl, setAvatarUrl] = useState<any>();
     const [currentUser, setCurrentUser] = useState<any>({});
@@ -68,4 +68,4 @@ const FollowedUser:FC<IFollowedUser> = ({dateOfReg, avatar, firstName, lastName,
     );
 };
 
-export default FollowedUser;
+export default FollowedUserBySearchedUser;

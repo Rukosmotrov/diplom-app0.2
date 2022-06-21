@@ -1,11 +1,12 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Avatar, Card, Grid, Typography} from "@mui/material";
+import {useAuth} from "../../../providers/useAuth";
+import {IUserInfo} from "../../../../interfaces";
 import {getDownloadURL, getStorage, ref} from "firebase/storage";
-import {useAuth} from "../../providers/useAuth";
-import {useNavigate} from "react-router-dom";
 import {doc, getDoc, updateDoc} from "firebase/firestore";
+import {useNavigate} from "react-router-dom";
 
-interface IFollowedUser {
+interface ISubscriber {
     dateOfReg: string;
     avatar: string;
     firstName: string;
@@ -13,7 +14,7 @@ interface IFollowedUser {
     email: string;
 }
 
-const FollowedUser:FC<IFollowedUser> = ({dateOfReg, avatar, firstName, lastName, email}) => {
+const SearchedUserSubscriber:FC<ISubscriber> = ({dateOfReg, avatar, firstName, lastName, email}) => {
     const {db} = useAuth();
     const [avatarUrl, setAvatarUrl] = useState<any>();
     const [currentUser, setCurrentUser] = useState<any>({});
@@ -45,11 +46,10 @@ const FollowedUser:FC<IFollowedUser> = ({dateOfReg, avatar, firstName, lastName,
     useEffect(() => {
         getCurrentUserDataFromDoc();
     }, []);
-
     return (
         <Card onClick={() => {
             updateCurrentUser();
-            navigate(`/user${dateOfReg}`);
+            navigate(`/user/${dateOfReg}`);
         }}>
             <Grid container direction='row'>
                 <Grid item sx={{p:1}}>
@@ -68,4 +68,4 @@ const FollowedUser:FC<IFollowedUser> = ({dateOfReg, avatar, firstName, lastName,
     );
 };
 
-export default FollowedUser;
+export default SearchedUserSubscriber;

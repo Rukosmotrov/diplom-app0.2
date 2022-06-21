@@ -24,7 +24,7 @@ const Posts:FC = () => {
     }
 
     useEffect(() => {
-        getPostsFromDoc()
+        getPostsFromDoc();
         setCanUpload(true);
     }, []);
 

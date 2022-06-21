@@ -46,6 +46,7 @@ const SearchedUserPostList:FC<ISearchedPostListProps> = ({posts}) => {
                                 time={post.time}
                                 author={post.author}
                                 user={currentUser}
+                                likes={post.likes}
                             />
                         })
                     }

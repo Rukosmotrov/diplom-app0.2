@@ -21,6 +21,7 @@ const PostList:FC<IPostListProps> = ({posts, onRemove}) => {
                                 time={post.time}
                                 remove={onRemove}
                                 author={post.author}
+                                likes={post.likes}
                             />
                         })
                     }

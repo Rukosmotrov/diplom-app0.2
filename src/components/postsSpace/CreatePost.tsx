@@ -77,7 +77,8 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
             ...post,
             id: Date.now(),
             author: user,
-            time: time
+            time: time,
+            likes: []
         };
         if (post.img !== '' || post.description !== '' && user){
             addPost(newPost);

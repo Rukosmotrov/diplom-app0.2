@@ -49,7 +49,7 @@ const SubscribedUser:FC<ISubscribedUser> = ({dateOfReg, avatar, firstName, lastN
     return (
         <Card onClick={() => {
             updateCurrentUser();
-            navigate(`/user/${dateOfReg}`);
+            navigate(`/user${dateOfReg}`);
         }}>
             <Grid container direction='row'>
                 <Grid item sx={{p:1}}>

@@ -1,24 +1,24 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Container, Typography, Card, Avatar, Grid} from "@mui/material";
-import {useAuth} from "../../providers/useAuth";
-import {IUserInfo} from "../../../interfaces";
+import {useAuth} from "../../../providers/useAuth";
+import {IUserInfo} from "../../../../interfaces";
 import {doc, getDoc} from "firebase/firestore";
-import Navbar from "../../navbar/Navbar";
-import Menu from "../../menu/Menu";
+import Navbar from "../../../navbar/Navbar";
+import Menu from "../../../menu/Menu";
 import {getDownloadURL, getStorage, ref} from "firebase/storage";
-import SubscribedUser from "./SubscribedUser";
+import SearchedUserSubscriber from "./SearchedUserSubscriber";
 
-const Subscribers:FC = () => {
+const SearchedUserSubscribers:FC = () => {
     const {db, user} = useAuth();
     const [isMenuOpen, setMenuOpen] = useState(false);
     const [subscribers, setSubscribers] = useState<any>();
     const storage = getStorage();
 
     const getUserDataFromDoc = async () => {
-        const docRef = doc(db, `${user?.email}`, "userData");
+        const docRef = doc(db, `usersList`, "currentUser");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            setSubscribers(docSnap.data().data.subscribers);
+            setSubscribers(docSnap.data().currentUser.subscribers);
             // const avatarRef = ref(storage, `${user?.email}/images/${docSnap.data().data.avatar}`);
             // getDownloadURL(avatarRef)
             //     .then((url) => {
@@ -49,7 +49,7 @@ const Subscribers:FC = () => {
             {subscribers?.map((item: any) => {
                 console.log(item)
                 return(
-                    <SubscribedUser
+                    <SearchedUserSubscriber
                         dateOfReg={item.dateOfReg}
                         avatar={item.avatar}
                         firstName={item.firstName}
@@ -65,4 +65,4 @@ const Subscribers:FC = () => {
     );
 };
 
-export default Subscribers;
+export default SearchedUserSubscribers;

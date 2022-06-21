@@ -33,6 +33,7 @@ export interface IPost {
     time?: string;
     author?: IUser | null;
     user?: any;
+    likes?: any;
 }
 
 export interface IMenu {

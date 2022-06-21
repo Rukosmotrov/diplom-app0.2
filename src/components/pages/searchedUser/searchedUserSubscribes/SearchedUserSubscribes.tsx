@@ -1,24 +1,25 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Container, Typography, Card, Avatar, Grid} from "@mui/material";
-import {useAuth} from "../../providers/useAuth";
-import {IUserInfo} from "../../../interfaces";
+import {useAuth} from "../../../providers/useAuth";
+import {IUserInfo} from "../../../../interfaces";
 import {doc, getDoc} from "firebase/firestore";
-import Navbar from "../../navbar/Navbar";
-import Menu from "../../menu/Menu";
+import Navbar from "../../../navbar/Navbar";
+import Menu from "../../../menu/Menu";
 import {getDownloadURL, getStorage, ref} from "firebase/storage";
-import SubscribedUser from "./SubscribedUser";
+import SubscribedUser from "../../subscribers/SubscribedUser";
+import FollowedUserBySearchedUser from "./FollowedUserBySearchedUser";
 
-const Subscribers:FC = () => {
+const SearchedUserSubscribes:FC = () => {
     const {db, user} = useAuth();
     const [isMenuOpen, setMenuOpen] = useState(false);
-    const [subscribers, setSubscribers] = useState<any>();
+    const [subscribes, setSubscribes] = useState<any>();
     const storage = getStorage();
 
     const getUserDataFromDoc = async () => {
-        const docRef = doc(db, `${user?.email}`, "userData");
+        const docRef = doc(db, "usersList", "currentUser");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            setSubscribers(docSnap.data().data.subscribers);
+            setSubscribes(docSnap.data().currentUser.subscribes);
             // const avatarRef = ref(storage, `${user?.email}/images/${docSnap.data().data.avatar}`);
             // getDownloadURL(avatarRef)
             //     .then((url) => {
@@ -43,13 +44,13 @@ const Subscribers:FC = () => {
             <Navbar openMenu={() => setMenuOpen(true)}/>
             <Card sx={{p: 2, mb: 5}}>
                 <Typography variant='h5'>
-                    Підписники
+                    Підписки
                 </Typography>
             </Card>
-            {subscribers?.map((item: any) => {
+            {subscribes?.map((item: any) => {
                 console.log(item)
                 return(
-                    <SubscribedUser
+                    <FollowedUserBySearchedUser
                         dateOfReg={item.dateOfReg}
                         avatar={item.avatar}
                         firstName={item.firstName}
@@ -65,4 +66,4 @@ const Subscribers:FC = () => {
     );
 };
 
-export default Subscribers;
+export default SearchedUserSubscribes;
