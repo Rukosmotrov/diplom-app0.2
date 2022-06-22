@@ -10,6 +10,7 @@ import News from "./News";
 import NewsList from "./NewsList";
 import {IPost} from "../../../interfaces";
 import Loader from "../../loader/Loader";
+import NewsListByPopularity from "./NewsListByPopularity";
 
 const NewsPage:FC = () => {
     const {db, user} = useAuth();
@@ -67,21 +68,17 @@ const NewsPage:FC = () => {
                             <List sx={{ pt: 0 }}>
                                 <Divider/>
                                 <ListItem button onClick={() => {
-                                    setSortMethod('standard');
-                                    setSortMenu(false);
-                                }}>
-                                    За замовчуванням
-                                </ListItem>
-                                <Divider/>
-                                <ListItem button onClick={() => {
                                     setSortMethod('newest');
                                     setSortMenu(false);
                                 }}>
-                                    Від найновіших
+                                    Спочатку найновіші
                                 </ListItem>
                                 <Divider/>
-                                <ListItem button onClick={() => setSortMenu(false)}>
-                                    Від найпопулярніших
+                                <ListItem button onClick={() => {
+                                    setSortMethod('popular');
+                                    setSortMenu(false);
+                                }}>
+                                    Спочатку найпопулярніші
                                 </ListItem>
                             </List>
                         </Dialog>
@@ -89,9 +86,15 @@ const NewsPage:FC = () => {
                 </Card>
                 {newsDone
                     ?
-                    subscribes.map((item: any) =>
-                    <NewsList email={item.email} key={item.email} sortMethod={sortMethod}/>
-                )
+                    sortMethod === 'newest'
+                        ?
+                        subscribes.map((item: any) =>
+                            <NewsList email={item.email} key={item.email}/>
+                        )
+                        :
+                        subscribes.map((item: any) =>
+                            <NewsListByPopularity email={item.email} key={item.email}/>
+                        )
                     :
                     <Loader/>
                 }

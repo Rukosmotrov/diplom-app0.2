@@ -12,14 +12,14 @@ interface INewsList {
 
 const NewsList:FC<INewsList> = ({email}) => {
     const {db} = useAuth();
-    const [sortedPostsByTime, setSortedPostsByTime] = useState<any>([]);
+    const [sortedPostsByPopularity, setSortedPostsByPopularity] = useState<any>([]);
     const [data, setData] = useState<IUserInfo>();
 
     const getUserPostsFromDoc = async () => {
         const docRef = doc(db, `${email}`, "posts");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-            setSortedPostsByTime([...docSnap.data().posts].sort((a,b) => b.id - a.id));
+            setSortedPostsByPopularity([...docSnap.data().posts].sort((a,b) => b.likes.length - a.likes.length));
         } else {
             return console.log("No such document!");
         }
@@ -43,7 +43,7 @@ const NewsList:FC<INewsList> = ({email}) => {
     return (
         <Grid container direction="column" sx={{display:'flex', alignItems:'center'}}>
             {
-                sortedPostsByTime.map((item: any) => {
+                sortedPostsByPopularity.map((item: any) => {
                     return (
                         <News
                             avatar={data?.avatar}
