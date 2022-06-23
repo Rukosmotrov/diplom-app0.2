@@ -50,9 +50,8 @@ const UserInfo:FC = () => {
         }
     }
 
-
     useEffect(() => {
-        getUserDataFromDoc()
+        getUserDataFromDoc();
     }, []);
 
     if (loading) {

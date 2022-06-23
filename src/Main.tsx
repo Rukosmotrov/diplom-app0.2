@@ -5,7 +5,6 @@ import {
 import './style.scss'
 import Navbar from "./components/navbar/Navbar";
 import Menu from "./components/menu/Menu";
-import Footer from "./components/Footer";
 import {BrowserRouter} from "react-router-dom"
 import Routers from "./components/router/Routers";
 import {useImportUserData} from "./components/hooks/useImportUserData";

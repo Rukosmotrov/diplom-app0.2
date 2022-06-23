@@ -16,7 +16,6 @@ import {useNavigate} from "react-router-dom";
 import {MenuData} from "../data/MenuData";
 import {useAuth} from "../providers/useAuth";
 import {signOut} from 'firebase/auth';
-import {useImportUserData} from "../hooks/useImportUserData";
 import {doc, getDoc} from "firebase/firestore";
 import MailIcon from "@mui/icons-material/Mail";
 import {getDownloadURL, getStorage, ref} from "firebase/storage";
@@ -26,6 +25,7 @@ const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
     const {user, ga, db} = useAuth();
     const [data, setData] = useState<IUserInfo>();
     const [avatarUrl, setAvatarUrl] = useState<any>();
+    const [unreadMsgs, setUnreadMsgs] = useState<any>([]);
     const storage = getStorage();
 
     const getUserDataFromDoc = async () => {
@@ -43,8 +43,14 @@ const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
         }
     }
 
+    const getLastMessages = async () => {
+        const lastMsgDocSnap = await getDoc(doc(db, 'lastMessage'));
+        console.log('Last MSG: ', lastMsgDocSnap.data());
+    }
+
     useEffect(() => {
         getUserDataFromDoc();
+        getLastMessages();
     }, []);
 
     return (

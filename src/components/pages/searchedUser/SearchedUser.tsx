@@ -7,8 +7,6 @@ import {
 import Posts from "../../postsSpace/Posts";
 import UserInfo from "../../user/UserInfo";
 import ShortUserInfo from "../../user/ShortUserInfo";
-import ShowAllFriends from "../../user/ShowAllFriends";
-import MusicBox from "../../user/MusicBox";
 import {doc, getDoc} from "firebase/firestore";
 import {useAuth} from "../../providers/useAuth";
 import {IUserInfo} from "../../../interfaces";
@@ -16,7 +14,6 @@ import Navbar from "../../navbar/Navbar";
 import Menu from "../../menu/Menu";
 import SearchedUserInfo from "./SearchedUserInfo";
 import SearchedUserShortInfo from "./SearchedUserShortInfo";
-import ShowAllSearchedUserFriends from "./ShowAllSearchedUserFriends";
 import SearchedUserPosts from "./searchedUserPostsSpace/SearchedUserPosts";
 
 const SearchedUser:FC = () => {
@@ -30,7 +27,6 @@ const SearchedUser:FC = () => {
                 <Grid item md={5} xs={12}>
                     <Box className='leftSide'>
                         <SearchedUserShortInfo/>
-                        <ShowAllSearchedUserFriends/>
                     </Box>
                 </Grid>
                 <Grid item md={7} xs={12}>

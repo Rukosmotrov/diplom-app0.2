@@ -1,13 +1,9 @@
-import React, {FC, useContext, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
     Button,
     Card,
-    CardMedia,
-    Divider,
     Grid,
-    CardHeader,
-    CardContent,
-    Typography, CardActions, ListItem, List, ListItemIcon, ListItemText, Avatar, Box
+    Typography, CardActions, Avatar, Box
 } from "@mui/material";
 import {IUserInfo} from "../../../interfaces";
 import {useAuth} from "../../providers/useAuth";
@@ -70,7 +66,7 @@ const SearchedUserInfo:FC = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setSignedUserData(docSnap.data().data);
-            setSignedSubs(docSnap.data().data.subscribes)
+            setSignedSubs(docSnap.data().data.subscribes);
             docSnap.data().data.subscribes.map((item: any) => {
                 if (item.email === currentDocSnap.data()?.currentUser.email){
                     setIsSubscribed(true);
@@ -84,13 +80,27 @@ const SearchedUserInfo:FC = () => {
     const subscribe = async () => {
         const docRef = doc(db, "usersList", "currentUser");
         const docSnap = await getDoc(docRef);
+        const signedUserMessagesRef = doc(db, `${user?.email}`, "messages");
+        const signedUserMessagesSnap = await getDoc(signedUserMessagesRef);
+        const currentUserMessagesRef = doc(db, `${docSnap.data()?.currentUser.email}`, "messages");
+        const currentUserMessagesSnap = await getDoc(currentUserMessagesRef);
         const currentDocRef = doc(db, `${docSnap.data()?.currentUser.email}`, "userData");
+        const currentDocSnap = await getDoc(currentDocRef);
         const signedDocRef = doc(db, `${user?.email}`, "userData");
+        const signedDocSnap = await getDoc(signedDocRef);
         await updateDoc(signedDocRef, {
-            data: {...signedUserData, subscribes: [...signedUserData.subscribes, currentUser]}
+            data: {...signedDocSnap.data()?.data,
+                subscribes: [...signedDocSnap.data()?.data.subscribes, currentDocSnap.data()?.data]}
         });
         await updateDoc(currentDocRef, {
-            data: {...data, subscribers: [...data?.subscribers, signedUserData]}
+            data: {...currentDocSnap.data()?.data,
+                subscribers: [...currentDocSnap.data()?.data.subscribers, signedDocSnap.data()?.data]}
+        });
+        await updateDoc(signedUserMessagesRef, {
+            messages: [docSnap.data()?.currentUser.email, ...signedUserMessagesSnap.data()?.messages]
+        });
+        await updateDoc(currentUserMessagesRef, {
+            messages: [user?.email, ...currentUserMessagesSnap.data()?.messages]
         });
         setIsSubscribed(true);
     }
@@ -102,12 +112,34 @@ const SearchedUserInfo:FC = () => {
         const currentDocSnap = await getDoc(currentDocRef);
         const signedDocRef = doc(db, `${user?.email}`, "userData");
         const signedDocSnap = await getDoc(signedDocRef);
+        const signedUserMessagesRef = doc(db, `${user?.email}`, "messages");
+        const signedUserMessagesSnap = await getDoc(signedUserMessagesRef);
+        const currentUserMessagesRef = doc(db, `${docSnap.data()?.currentUser.email}`, "messages");
+        const currentUserMessagesSnap = await getDoc(currentUserMessagesRef);
         if (docSnap.exists()) {
             setCurrentSubs( (prev: any) => prev.filter((item: any) => item.email !== signedDocSnap.data()?.data.email));
             setSignedSubs((prev: any) => prev.filter((item: any) => item.email !== currentDocSnap.data()?.data.email));
+            updateDoc(signedDocRef, {
+                data: {
+                    ...signedDocSnap.data()?.data,
+                    subscribes: signedDocSnap.data()?.data.subscribes.filter((item: any) => item.email !== currentDocSnap.data()?.data.email)
+                }
+            });
+            updateDoc(currentDocRef, {
+                data: {
+                    ...currentDocSnap.data()?.data,
+                    subscribers: currentDocSnap.data()?.data.subscribers.filter((item: any) => item.email !== signedDocSnap.data()?.data.email)
+                }
+            });
+            updateDoc(signedUserMessagesRef, {
+                messages: signedUserMessagesSnap.data()?.messages.filter((item:any) =>
+                    item !== currentDocSnap.data()?.data.email)
+            });
+            updateDoc(currentUserMessagesRef, {
+                messages: currentUserMessagesSnap.data()?.messages.filter((item:any) =>
+                    item !== signedDocSnap.data()?.data.email)
+            });
             setCanUpload(true);
-            // console.log('Unsub current: ', currentSubs);
-            // console.log('Unsub signed: ', signedSubs);
             setIsSubscribed(false);
         } else {
             return console.log("No such document!");
@@ -121,6 +153,10 @@ const SearchedUserInfo:FC = () => {
         const currentDocSnap = await getDoc(currentDocRef);
         const signedDocRef = doc(db, `${user?.email}`, "userData");
         const signedDocSnap = await getDoc(signedDocRef);
+        const signedUserMessagesRef = doc(db, `${user?.email}`, "messages");
+        const signedUserMessagesSnap = await getDoc(signedUserMessagesRef);
+        const currentUserMessagesRef = doc(db, `${docSnap.data()?.currentUser.email}`, "messages");
+        const currentUserMessagesSnap = await getDoc(currentUserMessagesRef);
         updateDoc(signedDocRef, {
             data: {
                 ...signedDocSnap.data()?.data,
@@ -145,11 +181,11 @@ const SearchedUserInfo:FC = () => {
         getUserDataFromDoc();
     }, [currentUser]);
 
-    useEffect(() => {
-        if (canUpload) {
-            updateDocs();
-        }
-    }, [isSubscribed]);
+    // useEffect(() => {
+    //     if (canUpload) {
+    //         updateDocs();
+    //     }
+    // }, [isSubscribed]);
 
     if (loading) {
         return <Loader/>
@@ -185,8 +221,16 @@ const SearchedUserInfo:FC = () => {
                     <CardActions>
                         <Button variant={isSubscribed ? 'outlined' : 'contained'}
                                 onClick={isSubscribed ? unSubscribe : subscribe}
-                                sx={{width:'150px', m:'0 20px'}}>{isSubscribed ? 'Following' : 'Follow'}</Button>
-                        <Button variant='contained' sx={{width:'150px', m:'0 20px'}}>Message</Button>
+                                sx={{width:'150px', m:'0 20px'}}
+                        >{isSubscribed ? 'Following' : 'Follow'}
+                        </Button>
+                        {isSubscribed &&
+                        <Button
+                            variant='contained'
+                            sx={{width:'150px', m:'0 20px'}}
+                            onClick={() => navigate('/messages')}
+                        >Message</Button>
+                        }
                     </CardActions>
                 </Card>
             </Grid>

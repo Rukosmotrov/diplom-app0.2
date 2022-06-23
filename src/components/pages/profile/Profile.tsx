@@ -7,8 +7,6 @@ import {
 import Posts from "../../postsSpace/Posts";
 import UserInfo from "../../user/UserInfo";
 import ShortUserInfo from "../../user/ShortUserInfo";
-import ShowAllFriends from "../../user/ShowAllFriends";
-import MusicBox from "../../user/MusicBox";
 import {doc, getDoc} from "firebase/firestore";
 import {useAuth} from "../../providers/useAuth";
 import {IUserInfo} from "../../../interfaces";
@@ -33,7 +31,6 @@ const Profile:FC = () => {
                     <Grid item md={5} xs={12}>
                         <Box className='leftSide'>
                             <ShortUserInfo/>
-                            <ShowAllFriends/>
                         </Box>
                     </Grid>
                     <Grid item md={7} xs={12}>
