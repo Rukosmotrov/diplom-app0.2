@@ -134,7 +134,7 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
                         <TextareaAutosize
                             id='description'
                             maxRows={4}
-                            style={{ width: 400, height:50, padding:10, fontFamily: "inherit" }}
+                            style={{ minWidth: 300, height:50, padding:10, fontFamily: "inherit", maxWidth: '300px'}}
                             value={post.description}
                             onChange={e => setPost({...post, description: e.target.value})}
                         />

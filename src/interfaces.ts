@@ -16,6 +16,7 @@ export interface IUserInfo {
     avatar: string | undefined;
     bgImg: string | undefined;
     dateOfReg: string;
+    isInNetwork?: string;
     subscribes: any;
     subscribers: any;
 }
@@ -72,7 +73,6 @@ export interface IUser {
     bgImg?: string;
     firstName: string;
     lastName: string;
-    isInNetwork?: boolean;
 }
 
 export interface IAuthContext {

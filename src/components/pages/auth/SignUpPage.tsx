@@ -29,7 +29,8 @@ const SignUpPage:FC = () => {
         bgImg: '',
         dateOfReg: `${Date.now()}`,
         subscribes: [],
-        subscribers: []
+        subscribers: [],
+        isInNetwork: ''
     });
     const [userNamesFromDoc, setUserNamesFromDoc] = useState<any>([]);
     const [userNamesToDoc, setUserNamesToDoc] = useState<any>({
@@ -88,7 +89,8 @@ const SignUpPage:FC = () => {
                     bgImg: 'light_faded_background_85547_1920x1080.jpg',
                     dateOfReg: userInfo.dateOfReg,
                     subscribes: [],
-                    subscribers: []
+                    subscribers: [],
+                    isInNetwork: 'online'
                 }
             })
 
@@ -126,7 +128,7 @@ const SignUpPage:FC = () => {
                             <Grid item xs={3}>
                                 <TextField
                                     type='password'
-                                    label='Password'
+                                    label='Пароль'
                                     variant='outlined'
                                     value={userData.password}
                                     onChange={e => setUserData( {...userData, password: e.target.value})}
@@ -136,7 +138,7 @@ const SignUpPage:FC = () => {
                             <Grid item xs={3}>
                                 <TextField
                                     type='text'
-                                    label='First name'
+                                    label="Ім'я"
                                     variant='outlined'
                                     value={userInfo.firstName}
                                     onChange={e => {setUserInfo({...userInfo, firstName: e.target.value})}}
@@ -146,7 +148,7 @@ const SignUpPage:FC = () => {
                             <Grid item xs={3}>
                                 <TextField
                                     type='text'
-                                    label='Last name'
+                                    label='Фамілія'
                                     variant='outlined'
                                     value={userInfo.lastName}
                                     onChange={e => {setUserInfo({...userInfo, lastName: e.target.value})}}
@@ -157,8 +159,7 @@ const SignUpPage:FC = () => {
                         <Grid container item direction="column" spacing={5} xs={6}>
                             <Grid item xs={3}>
                                 <TextField
-                                    type='text'
-                                    label='Date of birth'
+                                    type='date'
                                     variant='outlined'
                                     value={userInfo.birthDate}
                                     onChange={e => {setUserInfo({...userInfo, birthDate: e.target.value})}}
@@ -168,7 +169,7 @@ const SignUpPage:FC = () => {
                             <Grid item xs={3}>
                                 <TextField
                                     type='text'
-                                    label='Country of birth'
+                                    label='Країна народження'
                                     variant='outlined'
                                     value={userInfo.countryOfBirth}
                                     onChange={e => {setUserInfo({...userInfo, countryOfBirth: e.target.value})}}
@@ -177,7 +178,7 @@ const SignUpPage:FC = () => {
                             <Grid item xs={3}>
                                 <TextField
                                     type='text'
-                                    label='Country of residence'
+                                    label='Країна проживання'
                                     variant='outlined'
                                     value={userInfo.countryOfResidence}
                                     onChange={e => {setUserInfo({...userInfo, countryOfResidence: e.target.value})}}
@@ -186,7 +187,7 @@ const SignUpPage:FC = () => {
                             <Grid item xs={3}>
                                 <TextField
                                     type='text'
-                                    label='City of residence'
+                                    label='Місто'
                                     variant='outlined'
                                     value={userInfo.cityOfResidence}
                                     onChange={e => {setUserInfo({...userInfo, cityOfResidence: e.target.value})}}
@@ -195,8 +196,8 @@ const SignUpPage:FC = () => {
                         </Grid>
                     </Grid>
                     <ButtonGroup variant='text' sx={{display:'flex', justifyContent:'space-between', mt:5}}>
-                        <Button type='submit' variant='contained'>Sign up</Button>
-                        <Button onClick={() => navigate('/sign-in')}>Sign in</Button>
+                        <Button type='submit' variant='contained'>Зареєструватись</Button>
+                        <Button onClick={() => navigate('/sign-in')}>Вхід</Button>
                     </ButtonGroup>
                 </form>
             </Box>

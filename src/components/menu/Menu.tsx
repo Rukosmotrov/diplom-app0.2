@@ -15,8 +15,8 @@ import {IMenu, IUserInfo} from "../../interfaces";
 import {useNavigate} from "react-router-dom";
 import {MenuData} from "../data/MenuData";
 import {useAuth} from "../providers/useAuth";
-import {signOut} from 'firebase/auth';
-import {doc, getDoc} from "firebase/firestore";
+import {signInWithEmailAndPassword, signOut} from 'firebase/auth';
+import {doc, getDoc, updateDoc} from "firebase/firestore";
 import MailIcon from "@mui/icons-material/Mail";
 import {getDownloadURL, getStorage, ref} from "firebase/storage";
 
@@ -48,6 +48,24 @@ const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
         console.log('Last MSG: ', lastMsgDocSnap.data());
     }
 
+    const handleLogOut = async (e: any) =>{
+        e.preventDefault();
+        const docRef = doc(db, `${user?.email}`, "userData");
+        const docSnap = await getDoc(docRef);
+        try {
+            await updateDoc(docRef, {
+                data: {
+                    ...docSnap.data()?.data,
+                    isInNetwork: 'offline'
+                }
+            });
+            signOut(ga);
+            closeMenu();
+        } catch (error:any) {
+            console.log('');
+        }
+    }
+
     useEffect(() => {
         getUserDataFromDoc();
         getLastMessages();
@@ -65,7 +83,6 @@ const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
                         <CardHeader
                             avatar={<Avatar alt='User' src={avatarUrl}/>}
                             title={`${data?.firstName} ${data?.lastName}`}
-                            subheader={'online'}
                         />
                     </Card>
                     <Divider/>
@@ -97,9 +114,7 @@ const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
                                         closeMenu();
                                     }}>
                                     <ListItemIcon>
-                                        <Badge badgeContent={4} color="error">
-                                            <MailIcon />
-                                        </Badge>
+                                        <MailIcon />
                                     </ListItemIcon>
                                     <ListItemText primary={item.pageName}/>
                                 </Button>
@@ -108,10 +123,7 @@ const Menu:FC<IMenu> = ({menuOpen, closeMenu}) => {
                     }
                 })}
                 <ListItem>
-                    <Button onClick={() => {
-                        signOut(ga)
-                        closeMenu()
-                    }}>Log Out</Button>
+                    <Button onClick={handleLogOut}>Вийти</Button>
                 </ListItem>
             </List>
         </Drawer>

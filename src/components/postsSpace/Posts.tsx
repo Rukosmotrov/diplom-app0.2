@@ -53,12 +53,12 @@ const Posts:FC = () => {
         <Box sx={{top:'5rem'}}>
             <Card sx={{mt:5, mb:5}}>
                 <CardHeader
-                    title={'Publications'}
+                    title={'Публікації'}
                 />
             </Card>
             <Card sx={{mt:5, mb:5}}>
                 <CardHeader
-                    title={'Create post'}
+                    title={'Створити допис'}
                     action={
                         <IconButton aria-label='create post' onClick={() => setPostCreating(true)}>
                             <AddIcon/>

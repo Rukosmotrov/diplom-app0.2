@@ -17,6 +17,7 @@ const DialogsItem:FC<IDialogItem> = ({usr, selectUser, chat}) => {
     const [avatarUrl, setAvatarUrl] = useState<any>();
     const [data, setData] = useState<any>('');
     const [userData, setUserData] = useState<any>([]);
+    const [isId, setIsId] = useState<any>(false);
 
     const getUserDataFromDoc = async () => {
         const docRef = doc(db, `${usr}`, "userData");
@@ -39,12 +40,15 @@ const DialogsItem:FC<IDialogItem> = ({usr, selectUser, chat}) => {
         if (docSnap.exists()) {
             await docSnap.data().list.map(async (item: any) => {
                 if (item.email === user?.email) {
-                    const id = parseInt(item.dateOfReg) > parseInt(userData.dateOfReg) ?
-                        `${item.email}${usr}` : `${usr}${item.email}`;
-                    onSnapshot(doc(db, 'lastMessage', id), (doc) => {
-                        setData(doc.data());
-                        console.log('Last Message', doc.data());
-                    });
+                    const id1 = `${item.email}${usr}`;
+                    const id2 = `${usr}${item.email}`;
+                    const lastMsgDocSnap1 = await getDoc(doc(db, 'lastMessage', id1));
+                    const lastMsgDocSnap2 = await getDoc(doc(db, 'lastMessage', id2));
+                    if (lastMsgDocSnap1.exists()) {
+                        setData(lastMsgDocSnap1.data());
+                    } else {
+                        setData(lastMsgDocSnap2.data());
+                    }
                 }
             })
         } else {
@@ -65,11 +69,12 @@ const DialogsItem:FC<IDialogItem> = ({usr, selectUser, chat}) => {
             <Box className={classes.dialog_item_info}>
                 <Box className={classes.dialog_item_details}>
                     <Avatar src={avatarUrl} alt={`${usr}`}/>
-                    <Typography sx={{ml:1}}>{`${userData.firstName} ${userData.lastName}`}</Typography>
-                    {data?.from !== user?.email && data?.unread &&
-                        <div className={classes.unread}></div>
-                    }
+                    <Typography sx={{ml:1}}>{`${userData.firstName} ${userData.lastName} `}</Typography>
+                    <small style={{marginLeft: '10px'}}>{userData?.isInNetwork}</small>
                 </Box>
+                {data?.from !== user?.email && data?.unread &&
+                <div className={classes.unread}></div>
+                }
             </Box>
             <div className={classes.truncate}>
                 {data &&

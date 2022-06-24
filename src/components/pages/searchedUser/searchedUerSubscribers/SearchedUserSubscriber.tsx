@@ -47,7 +47,7 @@ const SearchedUserSubscriber:FC<ISubscriber> = ({dateOfReg, avatar, firstName, l
         getCurrentUserDataFromDoc();
     }, []);
     return (
-        <Card onClick={() => {
+        <Card sx={{mb:5}} onClick={() => {
             updateCurrentUser();
             navigate(`/user/${dateOfReg}`);
         }}>

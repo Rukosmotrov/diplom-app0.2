@@ -20,16 +20,6 @@ const SearchedUserSubscribes:FC = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             setSubscribes(docSnap.data().currentUser.subscribes);
-            // const avatarRef = ref(storage, `${user?.email}/images/${docSnap.data().data.avatar}`);
-            // getDownloadURL(avatarRef)
-            //     .then((url) => {
-            //         setAvatarUrl(url);
-            //     });
-            // const bgImgRef = ref(storage, `${user?.email}/images/${docSnap.data().data.bgImg}`);
-            // getDownloadURL(bgImgRef)
-            //     .then((url) => {
-            //         setBgImgUrl(url);
-            //     });
         } else {
             return console.log("No such document!");
         }

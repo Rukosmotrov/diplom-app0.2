@@ -6,11 +6,11 @@ import {signInWithEmailAndPassword} from 'firebase/auth';
 import {useAuth} from "../../providers/useAuth";
 import {Link, useNavigate} from "react-router-dom";
 import Navbar from "../../navbar/Navbar";
-import {doc, getDoc} from "firebase/firestore";
+import {doc, getDoc, updateDoc} from "firebase/firestore";
 
 
 const SignInPage:FC = () => {
-    const {ga} = useAuth();
+    const {ga, db} = useAuth();
     const [isRegError, setRegError] = useState(false);
     const regError = useRef('');
     const [userData, setUserData] = useState<IUserData>({email:'', password:''} as IUserData);
@@ -18,13 +18,18 @@ const SignInPage:FC = () => {
 
     const handleSignIn = async (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try {
+        const docRef = doc(db, `${userData.email}`, "userData");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
             await signInWithEmailAndPassword(ga, userData.email, userData.password);
-        } catch (error:any) {
-            error.message && console.log(error.message);
-            setRegError(true);
-            setTimeout(() => setRegError(true), 1500);
-            regError.current = error.message;
+            await updateDoc(docRef, {
+                data: {
+                    ...docSnap.data()?.data,
+                    isInNetwork: 'online'
+                }
+            });
+        } else {
+            console.log('');
         }
         setUserData({email:'', password:''});
     }
@@ -46,7 +51,7 @@ const SignInPage:FC = () => {
                     <br/><br/>
                     <TextField
                         type='password'
-                        label='Password'
+                        label='Пароль'
                         variant='outlined'
                         value={userData.password}
                         onChange={e => setUserData( {...userData, password: e.target.value})}
@@ -54,8 +59,8 @@ const SignInPage:FC = () => {
                     />
                     <br/><br/>
                     <ButtonGroup variant='text' sx={{display:'flex', justifyContent:'space-between'}}>
-                        <Button type='submit' variant='contained'>Sign in</Button>
-                        <Button onClick={() => navigate('/sign-up')}>Sign up</Button>
+                        <Button type='submit' variant='contained'>Вхід</Button>
+                        <Button onClick={() => navigate('/sign-up')}>Реєстрація</Button>
                     </ButtonGroup>
                 </form>
             </Box>

@@ -10,13 +10,9 @@ import {
     Typography, CardActions, ListItem, List, ListItemIcon, ListItemText, Avatar,
     Box
 } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
-import ChildFriendlyIcon from "@mui/icons-material/ChildFriendly";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import {IUserInfo} from "../../interfaces";
 import {useAuth} from "../providers/useAuth";
 import {doc, getDoc} from "firebase/firestore";
-import {useAuthState} from "react-firebase-hooks/auth";
 import Loader from "../loader/Loader";
 import {getDownloadURL, getStorage, ref} from "firebase/storage";
 import {Link, useNavigate} from "react-router-dom";
@@ -24,9 +20,9 @@ import {Link, useNavigate} from "react-router-dom";
 const UserInfo:FC = () => {
     const {user, db, ga} = useAuth();
     const [data, setData] = useState<IUserInfo>();
-    const [usr, loading, error] = useAuthState(ga);
     const [avatarUrl, setAvatarUrl] = useState<any>();
     const [bgImgUrl, setBgImgUrl] = useState<any>();
+    const [infoDone, setInfoDone] = useState<boolean>(false);
     const storage = getStorage();
     const navigate = useNavigate();
 
@@ -51,42 +47,45 @@ const UserInfo:FC = () => {
     }
 
     useEffect(() => {
-        getUserDataFromDoc();
+        getUserDataFromDoc()
+            .then(() => setInfoDone(true));
     }, []);
 
-    if (loading) {
-        return <Loader/>
-    }
-
-    return (
-        <Grid container spacing={5} direction='row'>
-            <Grid item xs={12}>
-                <div className='user-header' style={{backgroundImage: `url(${bgImgUrl ? bgImgUrl : '/'+data?.bgImg})`}}>
-                    <Avatar alt='User' src={avatarUrl} sx={{
-                        position: 'relative',
-                        width: '150px',
-                        height: '150px',
-                        border: '5px solid #eaebed',
-                    }}/>
-                </div>
-                <Card className='user-header-bottom'>
-                    <Typography variant={'h5'}>{`${data?.firstName} ${data?.lastName}`}</Typography>
-                    <Box sx={{display: 'flex', flexDirection: 'row'}}>
-                        <Typography variant={'h6'} sx={{width:'150px', m:'0 20px'}}>
-                            <Button onClick={() => navigate('/subscribers')}>
-                                {`Підписники: ${data?.subscribers.length}`}
-                            </Button>
-                        </Typography>
-                        <Typography variant={'h6'} sx={{width:'150px', m:'0 20px'}}>
-                            <Button variant='text' onClick={() => navigate('/subscribes')}>
-                                {`Підписки: ${data?.subscribes.length}`}
-                            </Button>
-                        </Typography>
-                    </Box>
-                </Card>
+    if (infoDone) {
+        return(
+            <Grid container spacing={5} direction='row'>
+                <Grid item xs={12}>
+                    <div className='user-header' style={{backgroundImage: `url(${bgImgUrl ? bgImgUrl : '/'+data?.bgImg})`}}>
+                        <Avatar alt='User' src={avatarUrl} sx={{
+                            position: 'relative',
+                            width: '150px',
+                            height: '150px',
+                            border: '5px solid #eaebed',
+                        }}/>
+                    </div>
+                    <Card className='user-header-bottom'>
+                        <Typography variant={'h5'}>{`${data?.firstName} ${data?.lastName}`}</Typography>
+                        <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                            <Typography variant={'h6'} sx={{width:'150px', m:'0 20px'}}>
+                                <Button onClick={() => navigate('/subscribers')}>
+                                    {`Підписники: ${data?.subscribers.length}`}
+                                </Button>
+                            </Typography>
+                            <Typography variant={'h6'} sx={{width:'150px', m:'0 20px'}}>
+                                <Button variant='text' onClick={() => navigate('/subscribes')}>
+                                    {`Підписки: ${data?.subscribes.length}`}
+                                </Button>
+                            </Typography>
+                        </Box>
+                    </Card>
+                </Grid>
             </Grid>
-        </Grid>
-    );
+        )
+    } else {
+        return(
+            <Loader/>
+        )
+    }
 };
 
 export default UserInfo;

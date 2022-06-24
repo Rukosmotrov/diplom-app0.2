@@ -47,7 +47,7 @@ const FollowedUserBySearchedUser:FC<IFollowedUser> = ({dateOfReg, avatar, firstN
     }, []);
 
     return (
-        <Card onClick={() => {
+        <Card sx={{mb:5}} onClick={() => {
             updateCurrentUser();
             navigate(`/user${dateOfReg}`);
         }}>

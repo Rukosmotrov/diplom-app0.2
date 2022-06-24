@@ -43,7 +43,7 @@ const SearchedUserPosts:FC = () => {
         <Box sx={{top:'5rem'}}>
             <Card sx={{mt:5, mb:5}}>
                 <CardHeader
-                    title={'Publications'}
+                    title={'Публікації'}
                 />
             </Card>
             <SearcheduserPostList posts={posts}/>

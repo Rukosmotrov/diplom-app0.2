@@ -108,7 +108,7 @@ const Navbar:FC<INavbar> = ({openMenu}) => {
                         {!searchActive && <SearchIcon/>}
                         <input
                             type="text"
-                            placeholder='Search'
+                            placeholder='Пошук'
                             value={searchTerm}
                             onFocus={(e) => {
                                 setSearchActive(true)

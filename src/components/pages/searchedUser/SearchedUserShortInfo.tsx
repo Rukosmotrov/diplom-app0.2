@@ -42,26 +42,26 @@ const SearchedUserShortInfo:FC = () => {
     return (
         <Card className='card' sx={{mt:5, p:2}}>
             <CardHeader
-                title={'Short info'}
+                title={'Коротка інформація'}
             />
             <List>
                 <ListItem>
                     <ListItemIcon>
                         <HomeIcon/>
                     </ListItemIcon>
-                    <ListItemText primary={`Living in: ${data?.cityOfResidence}`}/>
+                    <ListItemText primary={`Місто: ${data?.cityOfResidence}`}/>
                 </ListItem>
                 <ListItem>
                     <ListItemIcon>
                         <LocationOnIcon/>
                     </ListItemIcon>
-                    <ListItemText primary={`Born in: ${data?.countryOfBirth}`}/>
+                    <ListItemText primary={`Країна народження: ${data?.countryOfBirth}`}/>
                 </ListItem>
                 <ListItem>
                     <ListItemIcon>
                         <ChildFriendlyIcon/>
                     </ListItemIcon>
-                    <ListItemText primary={`Birth date: ${data?.birthDate}`}/>
+                    <ListItemText primary={`Дата народження: ${data?.birthDate}`}/>
                 </ListItem>
             </List>
         </Card>

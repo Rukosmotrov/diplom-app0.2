@@ -9,21 +9,21 @@ export const MenuData = [
     {
         path: '/home',
         icon: AccountCircleIcon,
-        pageName: 'Home page'
+        pageName: 'Головна сторінка'
     },
     {
         path: '/news',
         icon: ArticleIcon,
-        pageName: 'News'
+        pageName: 'Новини'
     },
     {
         path: '/messages',
         icon: MailIcon,
-        pageName: 'Messages'
+        pageName: 'Повідомлення'
     },
     {
         path: '/settings',
         icon: SettingsIcon,
-        pageName: 'Settings'
+        pageName: 'Налаштування'
     },
 ];

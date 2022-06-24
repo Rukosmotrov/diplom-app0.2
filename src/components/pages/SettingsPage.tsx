@@ -127,14 +127,17 @@ const SettingsPage:FC = () => {
                         }
                     </Grid>
                     <Divider/>
-                    <Grid item>
+                    <Grid item sx={{display:'flex', justifyContent:'space-between', mr:2}}>
                         <Button
                             onClick={() => setAvatarChanging(true)}>
-                            <ListItemText primary={'Change avatar'}/>
+                            <ListItemText primary={'Змінити аватар'}/>
                             <ListItemIcon>
                                 <AccountCircleIcon/>
                             </ListItemIcon>
                         </Button>
+                        <Button
+                            onClick={() => setNewUserInfo( {...newUserInfo, avatar: ''})}
+                        >Встановити стандартний аватар</Button>
                     </Grid>
                     <Divider/>
                     <ImageUploader
@@ -142,14 +145,17 @@ const SettingsPage:FC = () => {
                         closeModal={() => setAvatarChanging(false)}
                         changer={changeAvatar}
                     />
-                    <Grid item>
+                    <Grid item sx={{display:'flex', justifyContent:'space-between', mr:2}}>
                         <Button
                             onClick={() => setBgChanging(true)}>
-                            <ListItemText primary={'Change background image'}/>
+                            <ListItemText primary={'Змінити обкладинку профілю'}/>
                             <ListItemIcon>
                                 <ImageIcon/>
                             </ListItemIcon>
                         </Button>
+                        <Button
+                            onClick={() => setNewUserInfo( {...newUserInfo, bgImg: 'light_faded_background_85547_1920x1080.jpg'})}
+                        >Встановити стандартну обкладинку</Button>
                     </Grid>
                     <Divider/>
                     <ImageUploader
@@ -164,7 +170,7 @@ const SettingsPage:FC = () => {
                         <Grid item xs={4}>
                             <TextField
                                 type='text'
-                                label='First name'
+                                label="Ім'я"
                                 variant='outlined'
                                 value={newUserInfo?.firstName}
                                 onChange={e => setNewUserInfo( {...newUserInfo, firstName: e.target.value})}
@@ -173,16 +179,16 @@ const SettingsPage:FC = () => {
                         <Grid item xs={4}>
                             <TextField
                                 type='text'
-                                label='Last name'
+                                label='Фамілія'
                                 variant='outlined'
                                 value={newUserInfo?.lastName}
                                 onChange={e => setNewUserInfo( {...newUserInfo, lastName: e.target.value})}
                             />
                         </Grid>
                         <Grid item xs={4}>
+                            <label>Дата народження</label><br/>
                             <TextField
-                                type='text'
-                                label='Date of birth'
+                                type='date'
                                 variant='outlined'
                                 value={newUserInfo?.birthDate}
                                 onChange={e => setNewUserInfo( {...newUserInfo, birthDate: e.target.value})}
@@ -193,7 +199,7 @@ const SettingsPage:FC = () => {
                         <Grid item xs={4}>
                             <TextField
                                 type='text'
-                                label='Country of birth'
+                                label='Країна народження'
                                 variant='outlined'
                                 value={newUserInfo?.countryOfBirth}
                                 onChange={e => setNewUserInfo( {...newUserInfo, countryOfBirth: e.target.value})}
@@ -202,7 +208,7 @@ const SettingsPage:FC = () => {
                         <Grid item xs={4}>
                             <TextField
                                 type='text'
-                                label='Country of residence'
+                                label='Країна проживання'
                                 variant='outlined'
                                 value={newUserInfo?.countryOfResidence}
                                 onChange={e => setNewUserInfo( {...newUserInfo, countryOfResidence: e.target.value})}
@@ -211,7 +217,7 @@ const SettingsPage:FC = () => {
                         <Grid item xs={4}>
                             <TextField
                                 type='text'
-                                label='City of residence'
+                                label='Місто'
                                 variant='outlined'
                                 value={newUserInfo?.cityOfResidence}
                                 onChange={e => setNewUserInfo( {...newUserInfo, cityOfResidence: e.target.value})}
@@ -222,7 +228,7 @@ const SettingsPage:FC = () => {
                 <br/>
                 <Divider/>
                 <br/>
-                <Button variant='contained' onClick={updateUserData}>Save</Button>
+                <Button variant='contained' onClick={updateUserData}>Зберегти</Button>
             </Card>
             <Snackbar
                 autoHideDuration={4000}
