@@ -105,10 +105,10 @@ const ImageUploader:FC<IImageUploader> = ({isOpen, closeModal, changer}) => {
         >
             <Box className='modal'>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Post creating
+                    Завантаження зображення
                 </Typography>
                 <Box id="modal-modal-description">
-                    <p>Import image:  </p>
+                    <p>Завантажте файл:  </p>
                     {imageDrag
                         ? <Box
                             className='image-drop-area'
@@ -129,10 +129,10 @@ const ImageUploader:FC<IImageUploader> = ({isOpen, closeModal, changer}) => {
                     }
                 </Box>
                 <Divider/>
-                <Button onClick={uploadImage}>Submit</Button>
+                <Button onClick={uploadImage}>Створити</Button>
                 {isError
                     ? <Alert severity="error">{errorText.current}</Alert>
-                    : <Alert severity="info">Import an image and/or write description to create the post</Alert>
+                    : <Alert severity="info">Натисніть на поле з рамкою, щоб обрати зображення, або перенесіть зображення</Alert>
                 }
             </Box>
         </Modal>

@@ -119,46 +119,49 @@ const MessagesPage:FC = () => {
     return (
         <>
             <Navbar openMenu={() => setMenuOpen(true)}/>
-            {/*<Grid container direction='row'>*/}
-                <Box className={classes.messenger_container}>
-                    <Box className={classes.users_container}>
-                        {users.map((item:any) => <DialogsItem
+            <Box className={classes.messenger_container}>
+                <Box className={classes.users_container}>
+                    {users.length > 0
+                    ?
+                        users.map((item:any) => <DialogsItem
                             usr={item}
                             key={item.email}
                             selectUser={selectUser}
                             chat={chat}
-                        />)}
-                    </Box>
-                    <Box className={classes.messages_container}>
-                        {chat
-                            ?
-                            <>
-                                <div className={classes.messages_user}>
-                                    <Typography variant='h5'>{`${chat.firstName} ${chat.lastName}`}</Typography><br/>
-                                    <Divider sx={{width:'100%'}}/>
-                                </div>
-                                <div className={classes.messages}>
-                                    {messages.length ? messages.map((msg: any, i: any) =>{
+                        />)
+                        :
+                        <Typography variant='h5'>Чати відсутні</Typography>
+                    }
+                </Box>
+                <Box className={classes.messages_container}>
+                    {chat
+                        ?
+                        <>
+                            <div className={classes.messages_user}>
+                                <Typography variant='h5'>{`${chat.firstName} ${chat.lastName}`}</Typography><br/>
+                                <Divider sx={{width:'100%'}}/>
+                            </div>
+                            <div className={classes.messages}>
+                                {messages.length ? messages.map((msg: any, i: any) =>{
                                         console.log('Msg: ', msg);
                                         return (
                                             <Message key={i} message={msg} currentUser={currentUser}/>
                                         )
-                                        }
-                                    ) : null}
-                                </div>
-                                <MessageForm handleSubmit={handleSubmit} text={text} setText={setText}/>
-                            </>
-                            :
-                            <>
-                                <div className={classes.messages_user}>
-                                    <Typography variant='h5'>Оберіть чат</Typography><br/>
-                                    <Divider style={{width:'100%'}}/>
-                                </div>
-                            </>
-                        }
-                    </Box>
+                                    }
+                                ) : null}
+                            </div>
+                            <MessageForm handleSubmit={handleSubmit} text={text} setText={setText}/>
+                        </>
+                        :
+                        <>
+                            <div className={classes.messages_user}>
+                                <Typography variant='h5'>Оберіть чат</Typography><br/>
+                                <Divider style={{width:'100%'}}/>
+                            </div>
+                        </>
+                    }
                 </Box>
-            {/*</Grid>*/}
+            </Box>
             <Menu menuOpen={isMenuOpen} closeMenu={() => setMenuOpen(false)}/>
         </>
     );

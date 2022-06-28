@@ -7,8 +7,6 @@ import Navbar from "./components/navbar/Navbar";
 import Menu from "./components/menu/Menu";
 import {BrowserRouter} from "react-router-dom"
 import Routers from "./components/router/Routers";
-import {useImportUserData} from "./components/hooks/useImportUserData";
-import {useAuth} from "./components/providers/useAuth";
 
 
 const Main:FC = () => {

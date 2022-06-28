@@ -109,10 +109,10 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
         >
             <Box className='modal'>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Post creating
+                    Створення допису:
                 </Typography>
                 <Box id="modal-modal-description">
-                    <p>Import image:  </p>
+                    <p>Оберіть зображення:  </p>
                     {imageDrag
                         ? <Box
                             className='image-drop-area'
@@ -126,11 +126,11 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
                             onDragStart={e => dragStartHandler(e)}
                             onDragLeave={e => dragLeaveHandler(e)}
                             onDragOver={e => dragStartHandler(e)}
-                        ><input onChange={onClickChooseImage} type='file'/>Drag the file</Box>
+                        ><input onChange={onClickChooseImage} type='file'/>Оберіть файл</Box>
                     }
                 </Box>
                 <Box id="modal-modal-description">
-                    <p>Add description:  </p>
+                    <p>Додайте описання до допису:  </p>
                         <TextareaAutosize
                             id='description'
                             maxRows={4}
@@ -140,10 +140,10 @@ const CreatePost:FC<ICreatingPost> = ({postCreating, endCreating, addPost, setPo
                         />
                 </Box>
                 <Divider/>
-                <Button onClick={addNewPost}>Create</Button>
+                <Button onClick={addNewPost}>Створити</Button>
                 {isError
                     ? <Alert severity="error">{errorText.current}</Alert>
-                    : <Alert severity="info">Import an image and/or write description to create the post</Alert>
+                    : <Alert severity="info">Завантажте зображення та/або напишіть опис посту</Alert>
                 }
             </Box>
         </Modal>

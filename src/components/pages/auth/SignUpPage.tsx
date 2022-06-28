@@ -104,7 +104,8 @@ const SignUpPage:FC = () => {
             setTimeout(() => setRegError(true), 1500);
             regError.current = error.message;
         }
-        navigate('/');
+        window.location.reload();
+        navigate('/home');
     }
 
     return (

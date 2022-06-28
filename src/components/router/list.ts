@@ -1,7 +1,6 @@
 import NewsPage from "../pages/news/NewsPage";
 import MessagesPage from "../pages/messages/MessagesPage";
 import SettingsPage from "../pages/SettingsPage";
-import PageNotFound from "../pages/PageNotFound";
 import Subscribes from "../pages/subscribes/Subscribes";
 import Profile from "../pages/profile/Profile";
 import SignUpPage from "../pages/auth/SignUpPage";

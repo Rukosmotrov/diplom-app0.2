@@ -190,7 +190,7 @@ const SearchedUserInfo:FC = () => {
                             <Button variant={isSubscribed ? 'outlined' : 'contained'}
                                     onClick={isSubscribed ? unSubscribe : subscribe}
                                     sx={{width:'150px', m:'0 20px'}}
-                            >{isSubscribed ? 'Following' : 'Follow'}
+                            >{isSubscribed ? 'Відслідковується' : 'Підписатись'}
                             </Button>
                             <Button
                                 variant='contained'
@@ -198,7 +198,7 @@ const SearchedUserInfo:FC = () => {
                                 onClick={() => {
                                     setChat().then(() => navigate('/messages'));
                                 }}
-                            >Message</Button>
+                            >Повідомлення</Button>
                         </CardActions>
                     </Card>
                 </Grid>

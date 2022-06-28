@@ -4,7 +4,6 @@ import {useAuth} from "../../providers/useAuth";
 import News from "./News";
 import {IUserInfo} from "../../../interfaces";
 import {Grid, Box, Typography} from "@mui/material";
-import {NewsContext} from "../../context/context";
 
 interface INewsList {
     email: string;
