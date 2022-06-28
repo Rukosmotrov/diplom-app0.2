@@ -27,7 +27,7 @@ const PostList:FC<IPostListProps> = ({posts, onRemove}) => {
                     }
                 </Grid>
                 :
-                <Typography variant='h5'>There is no posts</Typography>
+                <Typography variant='h5'>Ще немає дописів</Typography>
             }
         </>
     );

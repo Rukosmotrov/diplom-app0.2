@@ -32,6 +32,7 @@ const SignInPage:FC = () => {
             console.log('');
         }
         setUserData({email:'', password:''});
+        navigate('/home');
     }
 
     return (

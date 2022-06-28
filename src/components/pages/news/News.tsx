@@ -20,6 +20,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import ShareIcon from "@mui/icons-material/Share";
 import {IUserInfo} from "../../../interfaces";
 import classes from "./news.module.scss";
+import {useNavigate} from "react-router-dom";
 
 interface INews {
     avatar: string | undefined;
@@ -42,6 +43,7 @@ const News:FC<INews> = ({img, description, alt, time, avatar, email, likes, id})
     const [canUpload, setCanUpload] = useState<boolean>(false);
     const [posts, setPosts] = useState<any>([]);
     const storage = getStorage();
+    const navigate = useNavigate();
 
     const getUserDataFromDoc = async () => {
         const docRef = doc(db, `${email}`, "userData");
@@ -78,6 +80,13 @@ const News:FC<INews> = ({img, description, alt, time, avatar, email, likes, id})
         } else {
             return console.log("No such document!");
         }
+    }
+
+    const updateCurrentUser = async () => {
+        const docRef = doc(db, "usersList", "currentUser");
+        await updateDoc(docRef, {
+            currentUser: data
+        });
     }
 
     const likePost = async () => {
@@ -138,9 +147,15 @@ const News:FC<INews> = ({img, description, alt, time, avatar, email, likes, id})
         <Grid item className={classes.newsCard} sx={{mb:5}}>
             <Card>
                 <CardHeader
-                    avatar={<Link href={`/user${data?.dateOfReg}`}><Avatar src={avatarUrl}/></Link>}
-                    title={<Link href={`/user${data?.dateOfReg}`} underline='none'>{`${data?.firstName} ${data?.lastName}`}</Link>}
+                    avatar={<Avatar src={avatarUrl}/>}
+                    title={`${data?.firstName} ${data?.lastName}`}
                     subheader={time}
+                    onClick={() => {
+                        updateCurrentUser()
+                            .then(() => {
+                                navigate(`/user${data?.dateOfReg}`);
+                            })}
+                    }
                 />
                 {img !== ''
                     ?

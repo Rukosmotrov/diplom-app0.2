@@ -132,8 +132,8 @@ const Post:FC<IPost> = ({
         <Grid item>
             <Card>
                     <CardHeader
-                        avatar={<Link href='/profile'><Avatar src={avatarUrl}/></Link>}
-                        title={<Link href='/profile' underline='none'>{`${data?.firstName} ${data?.lastName}`}</Link>}
+                        avatar={<Link href='/home'><Avatar src={avatarUrl}/></Link>}
+                        title={<Link href='/home' underline='none'>{`${data?.firstName} ${data?.lastName}`}</Link>}
                         subheader={time}
                         action={
                             <Tooltip title={'Видалити'}>
